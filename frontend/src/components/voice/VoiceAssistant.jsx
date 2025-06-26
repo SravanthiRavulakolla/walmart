@@ -52,7 +52,7 @@ const VoiceAssistant = () => {
     };
   }, []);
 
-  // Handle voice commands
+  // Handle voice commands (now routes through typing system)
   const handleVoiceCommand = (result, transcript) => {
     console.log('Voice command:', result);
     setIsProcessing(true);
@@ -131,8 +131,23 @@ const VoiceAssistant = () => {
       setLiveTranscript(transcript);
       setCurrentTranscript(`"${transcript}"`);
     } else {
+      // Final transcript - automatically add to chat and process
       setLiveTranscript('');
       setCurrentTranscript('');
+
+      if (transcript.trim()) {
+        console.log('Final transcript, auto-processing:', transcript);
+
+        // Add to chat input briefly to show what was heard
+        setTypedCommand(transcript);
+
+        // Process the command automatically and immediately
+        setTimeout(() => {
+          console.log('Auto-processing voice command:', transcript);
+          processVoiceCommand(transcript);
+          setTypedCommand(''); // Clear after processing
+        }, 100);
+      }
     }
   };
 
@@ -407,30 +422,180 @@ const VoiceAssistant = () => {
     }, 3000);
   };
 
-  // Handle typed commands
+  // Process voice commands directly (hands-free)
+  const processVoiceCommand = (command) => {
+    console.log('Processing voice command directly:', command);
+
+    // Check for deactivation commands
+    const deactivationWords = ['done', 'thanks', 'thank you', 'goodbye', 'bye', 'stop', 'exit', 'finish', 'that\'s all'];
+    const lowerCommand = command.toLowerCase().trim();
+
+    if (deactivationWords.some(word => lowerCommand.includes(word))) {
+      // Deactivate voice assistant
+      setIsActive(false);
+      setIsMinimized(true);
+      setCommandMode(false);
+      setListeningAnimation(false);
+      setLiveTranscript('');
+
+      if (voiceServiceRef.current) {
+        voiceServiceRef.current.stop();
+      }
+
+      toast.success('👋 Voice assistant deactivated. Have a great day!');
+      return;
+    }
+
+    // Add to conversation
+    setConversation(prev => [
+      ...prev,
+      { type: 'user', message: `"${command}"`, timestamp: Date.now() }
+    ]);
+
+    // Process command directly with actions
+    processCommandWithActions(command);
+  };
+
+  // Process commands and actually perform actions
+  const processCommandWithActions = (command) => {
+    const lowerCommand = command.toLowerCase().trim();
+    console.log('Processing command with actions:', lowerCommand);
+
+    // Remove wake words
+    const cleanCommand = lowerCommand
+      .replace(/hey sense/gi, '')
+      .replace(/hi sense/gi, '')
+      .replace(/ok sense/gi, '')
+      .replace(/sense/gi, '')
+      .trim();
+
+    console.log('Clean command:', cleanCommand);
+
+    // Navigation commands
+    if (cleanCommand.includes('take me to') || cleanCommand.includes('go to') || cleanCommand.includes('open')) {
+      if (cleanCommand.includes('product')) {
+        navigate('/products');
+        toast.success('🛍️ Opening products');
+        addAssistantMessage('OK, opening products');
+        return;
+      }
+      if (cleanCommand.includes('cart')) {
+        navigate('/cart');
+        toast.success('🛒 Opening cart');
+        addAssistantMessage('OK, opening cart');
+        return;
+      }
+      if (cleanCommand.includes('dashboard') || cleanCommand.includes('home')) {
+        navigate('/dashboard');
+        toast.success('🏠 Opening dashboard');
+        addAssistantMessage('OK, opening dashboard');
+        return;
+      }
+    }
+
+    // Cart commands
+    if (cleanCommand.includes('add') && cleanCommand.includes('cart')) {
+      const item = extractItemName(cleanCommand);
+      if (item) {
+        const product = createProductFromName(item);
+        addToCart(product);
+        toast.success(`✅ Added ${product.name}`);
+        addAssistantMessage(`Added ${product.name} to cart`);
+        return;
+      }
+    }
+
+    // Show cart
+    if (cleanCommand.includes('show') && cleanCommand.includes('cart')) {
+      navigate('/cart');
+      toast.success('🛒 Opening cart');
+      addAssistantMessage('OK, showing cart');
+      return;
+    }
+
+    // Clear cart
+    if (cleanCommand.includes('clear') && cleanCommand.includes('cart')) {
+      clearCart();
+      toast.success('🧹 Cart cleared');
+      addAssistantMessage('Cart cleared');
+      return;
+    }
+
+    // Default response
+    addAssistantMessage('OK, got it');
+  };
+
+  // Helper functions
+  const addAssistantMessage = (message) => {
+    setConversation(prev => [
+      ...prev,
+      { type: 'assistant', message, timestamp: Date.now() }
+    ]);
+  };
+
+  const extractItemName = (command) => {
+    // Extract item name from commands like "add headphones to cart"
+    const patterns = [
+      /add\s+(.+?)\s+to\s+cart/i,
+      /add\s+(.+)/i,
+      /get\s+(.+)/i,
+      /buy\s+(.+)/i
+    ];
+
+    for (const pattern of patterns) {
+      const match = command.match(pattern);
+      if (match && match[1]) {
+        return match[1].trim();
+      }
+    }
+    return null;
+  };
+
+  const createProductFromName = (itemName) => {
+    // Product mappings with realistic prices
+    const productMappings = {
+      'headphones': { name: 'Wireless Headphones', price: 79.99, category: 'Electronics' },
+      'laptop': { name: 'Laptop Computer', price: 899.99, category: 'Electronics' },
+      'phone': { name: 'Smartphone', price: 699.99, category: 'Electronics' },
+      'tablet': { name: 'Tablet', price: 329.99, category: 'Electronics' },
+      'mouse': { name: 'Wireless Mouse', price: 29.99, category: 'Electronics' },
+      'keyboard': { name: 'Wireless Keyboard', price: 49.99, category: 'Electronics' },
+      'speaker': { name: 'Bluetooth Speaker', price: 59.99, category: 'Electronics' },
+      'charger': { name: 'Phone Charger', price: 19.99, category: 'Electronics' },
+      'cable': { name: 'USB Cable', price: 12.99, category: 'Electronics' },
+      'book': { name: 'Book', price: 14.99, category: 'Books' },
+      'shirt': { name: 'T-Shirt', price: 19.99, category: 'Clothing' },
+      'jeans': { name: 'Jeans', price: 49.99, category: 'Clothing' },
+      'shoes': { name: 'Sneakers', price: 89.99, category: 'Clothing' }
+    };
+
+    // Try to find a match
+    const lowerItemName = itemName.toLowerCase();
+    for (const [key, product] of Object.entries(productMappings)) {
+      if (lowerItemName.includes(key)) {
+        return {
+          ...product,
+          id: Date.now() + Math.random(),
+        };
+      }
+    }
+
+    // Default product
+    return {
+      name: itemName,
+      price: 29.99,
+      category: 'General',
+      id: Date.now() + Math.random()
+    };
+  };
+
+  // Handle typed commands (manual typing)
   const handleTypedCommand = (e) => {
     e.preventDefault();
     if (!typedCommand.trim()) return;
 
     console.log('Processing typed command:', typedCommand);
-
-    // Process the typed command using the same processor
-    if (voiceServiceRef.current) {
-      const context = {
-        currentPage: window.location.pathname,
-        isActive: true, // Treat typed commands as always active
-        commandMode: true,
-        timestamp: Date.now()
-      };
-
-      const result = voiceServiceRef.current.commandProcessor.processCommand(typedCommand, context);
-      console.log('Typed command result:', result);
-
-      // Handle the result the same way as voice commands
-      handleVoiceCommand(result, typedCommand);
-    }
-
-    // Clear the input
+    processVoiceCommand(typedCommand); // Use same processor
     setTypedCommand('');
   };
 
@@ -720,6 +885,12 @@ const VoiceAssistant = () => {
                 className="text-xs bg-white px-2 py-1 rounded-full border hover:bg-gray-50 transition-colors"
               >
                 show my cart
+              </button>
+              <button
+                onClick={() => setTypedCommand('thanks, done')}
+                className="text-xs bg-red-50 text-red-600 px-2 py-1 rounded-full border border-red-200 hover:bg-red-100 transition-colors"
+              >
+                done shopping
               </button>
             </div>
           </div>
