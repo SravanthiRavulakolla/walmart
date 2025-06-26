@@ -5,6 +5,7 @@ import { AdaptiveShoppingProvider, useAdaptiveShopping } from './contexts/Adapti
 import AdaptiveShoppingPanel from './components/adaptive/AdaptiveShoppingPanel';
 import VoiceAssistant from './components/voice/VoiceAssistant';
 import VoiceTestPage from './components/voice/VoiceTestPage';
+import CartPage from './components/CartPage';
 import useAdaptiveBehavior from './hooks/useAdaptiveBehavior';
 
 // Homepage
@@ -1413,6 +1414,10 @@ function App() {
         <Route
           path="/products"
           element={isAuthenticated ? <ProductsPage /> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/cart"
+          element={isAuthenticated ? <CartPage /> : <Navigate to="/login" replace />}
         />
         <Route
           path="/adaptive"

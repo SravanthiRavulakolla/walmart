@@ -96,6 +96,29 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('cart');
   };
 
+  const updateQuantity = (itemId, newQuantity) => {
+    if (newQuantity <= 0) {
+      removeFromCart(itemId);
+      return;
+    }
+
+    const newCart = cart.map(item =>
+      item.id === itemId
+        ? { ...item, quantity: newQuantity }
+        : item
+    );
+    setCart(newCart);
+    localStorage.setItem('cart', JSON.stringify(newCart));
+  };
+
+  const getCartTotal = () => {
+    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
+
+  const getCartCount = () => {
+    return cart.reduce((count, item) => count + item.quantity, 0);
+  };
+
   const updateUser = (updatedUser) => {
     setUser(updatedUser);
     localStorage.setItem('user', JSON.stringify(updatedUser));
@@ -113,6 +136,9 @@ export const AuthProvider = ({ children }) => {
     addToCart,
     removeFromCart,
     clearCart,
+    updateQuantity,
+    getCartTotal,
+    getCartCount,
   };
 
   return (

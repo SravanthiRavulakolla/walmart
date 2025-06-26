@@ -492,10 +492,9 @@ const VoiceAssistant = () => {
         return;
       }
       if (cleanCommand.includes('cart')) {
-        // Since there's no cart route, open dashboard and show cart info
-        navigate('/dashboard');
-        toast.success('🛒 Opening dashboard with cart');
-        addAssistantMessage('OK, showing your cart on dashboard');
+        navigate('/cart');
+        toast.success('🛒 Opening cart');
+        addAssistantMessage('OK, opening your cart');
         return;
       }
     }
@@ -547,32 +546,40 @@ const VoiceAssistant = () => {
     }
 
     // Disable adaptive features
-    if (cleanCommand.includes('disable') || cleanCommand.includes('turn off') || cleanCommand.includes('remove')) {
-      if (cleanCommand.includes('high contrast')) {
+    if (cleanCommand.includes('disable') || cleanCommand.includes('turn off') || cleanCommand.includes('remove') ||
+        cleanCommand.includes('reduce') || cleanCommand.includes('lower') || cleanCommand.includes('normal') ||
+        cleanCommand.includes('reset') || cleanCommand.includes('undo')) {
+      if (cleanCommand.includes('high contrast') || cleanCommand.includes('contrast')) {
         applyAdaptiveFeature('highContrast', false);
         toast.success('🎨 High contrast disabled');
         addAssistantMessage('High contrast disabled');
         return;
       }
-      if (cleanCommand.includes('large text') || cleanCommand.includes('big text')) {
+      if (cleanCommand.includes('large text') || cleanCommand.includes('big text') || cleanCommand.includes('text')) {
         applyAdaptiveFeature('largeText', false);
         toast.success('📝 Large text disabled');
         addAssistantMessage('Large text disabled');
         return;
       }
-      if (cleanCommand.includes('focus mode')) {
+      if (cleanCommand.includes('focus mode') || cleanCommand.includes('focus')) {
         applyAdaptiveFeature('focusMode', false);
         toast.success('🎯 Focus mode disabled');
         addAssistantMessage('Focus mode disabled');
+        return;
+      }
+      if (cleanCommand.includes('motion')) {
+        applyAdaptiveFeature('reducedMotion', false);
+        toast.success('🔄 Reduced motion disabled');
+        addAssistantMessage('Reduced motion disabled');
         return;
       }
     }
 
     // Show cart
     if (cleanCommand.includes('show') && cleanCommand.includes('cart')) {
-      navigate('/dashboard');
-      toast.success('🛒 Opening dashboard with cart');
-      addAssistantMessage('OK, showing cart on dashboard');
+      navigate('/cart');
+      toast.success('🛒 Opening cart');
+      addAssistantMessage('OK, showing your cart');
       return;
     }
 
@@ -584,16 +591,63 @@ const VoiceAssistant = () => {
       return;
     }
 
+    // PrepPal integration - event planning
+    if (cleanCommand.includes('going to') || cleanCommand.includes('planning') || cleanCommand.includes('event') ||
+        cleanCommand.includes('picnic') || cleanCommand.includes('party') || cleanCommand.includes('trip') ||
+        cleanCommand.includes('camping') || cleanCommand.includes('beach') || cleanCommand.includes('barbecue')) {
+
+      const eventType = extractEventType(cleanCommand);
+      const suggestions = getPrepPalSuggestions(eventType);
+
+      navigate('/preppal');
+      toast.success(`🎯 Opening PrepPal for ${eventType}`);
+      addAssistantMessage(`Great! I found some essentials for your ${eventType}:`);
+
+      // Add suggestions to conversation
+      setTimeout(() => {
+        addAssistantMessage(`📋 ${eventType.toUpperCase()} ESSENTIALS:\n${suggestions.join('\n')}\n\nWould you like me to add any of these to your cart?`);
+      }, 1000);
+
+      return;
+    }
+
+    // PrepPal integration - event planning
+    if (cleanCommand.includes('going to') || cleanCommand.includes('planning') || cleanCommand.includes('event') ||
+        cleanCommand.includes('picnic') || cleanCommand.includes('party') || cleanCommand.includes('trip') ||
+        cleanCommand.includes('camping') || cleanCommand.includes('beach') || cleanCommand.includes('barbecue')) {
+
+      const eventType = extractEventType(cleanCommand);
+      const suggestions = getPrepPalSuggestions(eventType);
+
+      navigate('/preppal');
+      toast.success(`🎯 Opening PrepPal for ${eventType}`);
+      addAssistantMessage(`Great! I found some essentials for your ${eventType}:`);
+
+      // Add suggestions to conversation
+      setTimeout(() => {
+        addAssistantMessage(`📋 ${eventType.toUpperCase()} ESSENTIALS:\n${suggestions.join('\n')}\n\nWould you like me to add any of these to your cart?`);
+      }, 1000);
+
+      return;
+    }
+
     // Default response
     addAssistantMessage('OK, got it');
   };
 
   // Helper functions
   const addAssistantMessage = (message) => {
-    setConversation(prev => [
-      ...prev,
-      { type: 'assistant', message, timestamp: Date.now() }
-    ]);
+    setConversation(prev => {
+      const newConversation = [...prev, { type: 'assistant', message, timestamp: Date.now() }];
+      // Auto-scroll to bottom after message is added
+      setTimeout(() => {
+        const conversationArea = document.querySelector('.conversation-area');
+        if (conversationArea) {
+          conversationArea.scrollTop = conversationArea.scrollHeight;
+        }
+      }, 100);
+      return newConversation;
+    });
   };
 
   // Apply adaptive features
@@ -737,6 +791,80 @@ const VoiceAssistant = () => {
     };
   };
 
+  // PrepPal helper functions
+  const extractEventType = (command) => {
+    const eventTypes = {
+      'picnic': 'picnic',
+      'party': 'party',
+      'camping': 'camping',
+      'beach': 'beach trip',
+      'barbecue': 'barbecue',
+      'trip': 'trip',
+      'hiking': 'hiking',
+      'birthday': 'birthday party'
+    };
+
+    for (const [key, value] of Object.entries(eventTypes)) {
+      if (command.includes(key)) {
+        return value;
+      }
+    }
+    return 'event';
+  };
+
+  const getPrepPalSuggestions = (eventType) => {
+    const suggestions = {
+      'picnic': [
+        '🧺 Picnic Basket ($24.99)',
+        '🥤 Cooler with Ice Packs ($39.99)',
+        '🍽️ Disposable Plates & Utensils ($12.99)',
+        '🧻 Paper Towels & Napkins ($8.99)',
+        '🪑 Folding Chairs ($29.99 each)',
+        '☂️ Pop-up Canopy ($79.99)'
+      ],
+      'camping': [
+        '⛺ 4-Person Tent ($89.99)',
+        '🎒 Sleeping Bags ($34.99 each)',
+        '🔦 LED Lantern ($19.99)',
+        '🍳 Portable Camp Stove ($45.99)',
+        '🧊 Large Cooler ($59.99)',
+        '🪓 Multi-tool Kit ($24.99)'
+      ],
+      'beach trip': [
+        '🏖️ Beach Umbrella ($34.99)',
+        '🪑 Beach Chairs ($24.99 each)',
+        '🧴 Sunscreen SPF 50 ($12.99)',
+        '🏐 Beach Volleyball ($16.99)',
+        '🧊 Portable Cooler ($29.99)',
+        '🏊 Beach Towels ($14.99 each)'
+      ],
+      'party': [
+        '🎈 Party Decorations ($19.99)',
+        '🍽️ Paper Plates & Cups ($15.99)',
+        '🎵 Bluetooth Speaker ($49.99)',
+        '🍰 Cake Mix & Frosting ($8.99)',
+        '🥤 Party Drinks ($24.99)',
+        '📸 Disposable Cameras ($12.99)'
+      ],
+      'barbecue': [
+        '🔥 Charcoal & Lighter Fluid ($18.99)',
+        '🍖 BBQ Tools Set ($29.99)',
+        '🧊 Ice & Cooler ($34.99)',
+        '🌭 Hot Dogs & Burgers ($22.99)',
+        '🥗 Side Dish Ingredients ($16.99)',
+        '🧻 Paper Towels & Wet Wipes ($9.99)'
+      ]
+    };
+
+    return suggestions[eventType] || [
+      '📋 Event Planning Checklist ($4.99)',
+      '🛍️ Shopping Bags ($7.99)',
+      '📱 Portable Phone Charger ($19.99)',
+      '💧 Bottled Water ($8.99)',
+      '🍿 Snacks Variety Pack ($15.99)'
+    ];
+  };
+
   // Handle typed commands (manual typing)
   const handleTypedCommand = (e) => {
     e.preventDefault();
@@ -757,19 +885,22 @@ const VoiceAssistant = () => {
       <div className="fixed bottom-6 right-6 z-50 flex flex-col space-y-3">
 
         {/* Typing Button */}
-        <div className="relative">
+        <div className="relative group">
           <button
             onClick={() => {
               setIsActive(true);
               setIsMinimized(false);
             }}
-            className="w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white"
-            title="Open Text Commands"
+            className="w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white hover:scale-110 border-2 border-white"
+            title="Walmart Voice Assistant - Type Commands"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
           </button>
+          <div className="absolute -left-32 top-1/2 transform -translate-y-1/2 bg-gray-900 text-white px-3 py-1 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+            Type Commands
+          </div>
         </div>
 
         {/* Voice Button */}
@@ -793,16 +924,16 @@ const VoiceAssistant = () => {
           {/* Main Button */}
           <button
             onClick={toggleVoiceAssistant}
-            className={`relative w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
+            className={`relative w-16 h-16 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 border-2 border-white ${
               isActive
                 ? listeningAnimation
-                  ? 'bg-gradient-to-r from-blue-500 to-blue-600 scale-110'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 scale-110 animate-pulse'
                   : isProcessing
-                  ? 'bg-gradient-to-r from-green-500 to-green-600'
-                  : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700'
-                : 'bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700'
+                  ? 'bg-gradient-to-r from-green-600 to-green-700 animate-spin'
+                  : 'bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 hover:scale-105'
+                : 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-blue-600 hover:to-blue-700 hover:scale-105'
             } text-white z-10`}
-            title={isActive ? 'Voice Assistant Active' : 'Enable Voice Assistant'}
+            title={isActive ? 'Walmart Voice Assistant - Active' : 'Enable Walmart Voice Assistant'}
           >
             {isActive ? (
               listeningAnimation ? (
@@ -863,15 +994,19 @@ const VoiceAssistant = () => {
 
       {/* Voice Assistant Panel */}
       {isActive && !isMinimized && (
-        <div className="fixed bottom-24 right-6 w-80 bg-white rounded-lg shadow-2xl border border-gray-200 z-40">
+        <div className="fixed bottom-24 right-6 w-96 bg-white rounded-xl shadow-2xl border border-gray-200 z-40 backdrop-blur-sm bg-white/95">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+          <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-xl">
             <div className="flex items-center">
-              <div className={`w-3 h-3 rounded-full mr-2 ${
-                commandMode ? 'bg-green-500 animate-pulse' : 
-                isListening ? 'bg-blue-500 animate-pulse' : 'bg-gray-400'
-              }`}></div>
-              <h3 className="font-semibold text-gray-900">Voice Assistant</h3>
+              <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mr-3">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2a1 1 0 0 1 2 0v2a5 5 0 0 0 10 0v-2a1 1 0 0 1 2 0z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">Walmart Voice Assistant</h3>
+                <p className="text-blue-100 text-xs">Powered by SenseEase AI</p>
+              </div>
             </div>
             <div className="flex items-center space-x-2">
               <button
@@ -935,7 +1070,7 @@ const VoiceAssistant = () => {
           )}
 
           {/* Conversation */}
-          <div className="h-64 overflow-y-auto p-4 space-y-3">
+          <div className="conversation-area h-64 overflow-y-auto p-4 space-y-3 scroll-smooth">
             {conversation.length === 0 ? (
               <div className="text-center text-gray-500 py-8">
                 <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center">
@@ -993,10 +1128,15 @@ const VoiceAssistant = () => {
           </div>
 
           {/* Type Command Input */}
-          <div className="p-4 border-t border-gray-200 bg-gradient-to-r from-green-50 to-blue-50">
-            <div className="mb-2">
-              <h4 className="text-sm font-medium text-gray-700 mb-1">💬 Type Your Command</h4>
-              <p className="text-xs text-gray-500">No need to say "Hey Sense" - just type and send!</p>
+          <div className="p-4 border-t border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
+            <div className="mb-3">
+              <h4 className="text-sm font-semibold text-gray-800 mb-1 flex items-center">
+                <svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                Type Your Command
+              </h4>
+              <p className="text-xs text-gray-600">Professional voice shopping assistant for Walmart</p>
             </div>
             <form onSubmit={handleTypedCommand} className="flex space-x-2">
               <input
@@ -1004,14 +1144,17 @@ const VoiceAssistant = () => {
                 value={typedCommand}
                 onChange={(e) => setTypedCommand(e.target.value)}
                 placeholder="add headphones to cart"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-500"
                 autoComplete="off"
               />
               <button
                 type="submit"
                 disabled={!typedCommand.trim()}
-                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-lg text-sm hover:from-blue-600 hover:to-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200 font-medium"
+                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg text-sm hover:from-blue-700 hover:to-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-md hover:shadow-lg"
               >
+                <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
                 Send
               </button>
             </form>
