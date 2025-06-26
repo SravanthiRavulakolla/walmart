@@ -472,17 +472,11 @@ const VoiceAssistant = () => {
     console.log('Clean command:', cleanCommand);
 
     // Navigation commands
-    if (cleanCommand.includes('take me to') || cleanCommand.includes('go to') || cleanCommand.includes('open')) {
-      if (cleanCommand.includes('product')) {
+    if (cleanCommand.includes('take me to') || cleanCommand.includes('go to') || cleanCommand.includes('open') || cleanCommand.includes('show me')) {
+      if (cleanCommand.includes('product') || cleanCommand.includes('shop') || cleanCommand.includes('store')) {
         navigate('/products');
         toast.success('🛍️ Opening products');
         addAssistantMessage('OK, opening products');
-        return;
-      }
-      if (cleanCommand.includes('cart')) {
-        navigate('/cart');
-        toast.success('🛒 Opening cart');
-        addAssistantMessage('OK, opening cart');
         return;
       }
       if (cleanCommand.includes('dashboard') || cleanCommand.includes('home')) {
@@ -491,25 +485,94 @@ const VoiceAssistant = () => {
         addAssistantMessage('OK, opening dashboard');
         return;
       }
+      if (cleanCommand.includes('adaptive') || cleanCommand.includes('settings') || cleanCommand.includes('accessibility')) {
+        navigate('/adaptive');
+        toast.success('⚙️ Opening adaptive settings');
+        addAssistantMessage('OK, opening adaptive settings');
+        return;
+      }
+      if (cleanCommand.includes('cart')) {
+        // Since there's no cart route, open dashboard and show cart info
+        navigate('/dashboard');
+        toast.success('🛒 Opening dashboard with cart');
+        addAssistantMessage('OK, showing your cart on dashboard');
+        return;
+      }
     }
 
-    // Cart commands
-    if (cleanCommand.includes('add') && cleanCommand.includes('cart')) {
+    // Cart commands - more flexible patterns
+    if (cleanCommand.includes('add') || cleanCommand.includes('get') || cleanCommand.includes('buy') || cleanCommand.includes('purchase')) {
       const item = extractItemName(cleanCommand);
+      console.log('Extracted item:', item);
       if (item) {
         const product = createProductFromName(item);
+        console.log('Created product:', product);
         addToCart(product);
         toast.success(`✅ Added ${product.name}`);
         addAssistantMessage(`Added ${product.name} to cart`);
+        return;
+      } else {
+        console.log('No item extracted from command:', cleanCommand);
+        addAssistantMessage('What would you like to add to your cart?');
+        return;
+      }
+    }
+
+    // Adaptive features
+    if (cleanCommand.includes('apply') || cleanCommand.includes('enable') || cleanCommand.includes('turn on')) {
+      if (cleanCommand.includes('high contrast')) {
+        applyAdaptiveFeature('highContrast', true);
+        toast.success('🎨 High contrast enabled');
+        addAssistantMessage('High contrast enabled');
+        return;
+      }
+      if (cleanCommand.includes('large text') || cleanCommand.includes('big text')) {
+        applyAdaptiveFeature('largeText', true);
+        toast.success('📝 Large text enabled');
+        addAssistantMessage('Large text enabled');
+        return;
+      }
+      if (cleanCommand.includes('focus mode')) {
+        applyAdaptiveFeature('focusMode', true);
+        toast.success('🎯 Focus mode enabled');
+        addAssistantMessage('Focus mode enabled');
+        return;
+      }
+      if (cleanCommand.includes('reduced motion')) {
+        applyAdaptiveFeature('reducedMotion', true);
+        toast.success('🔄 Reduced motion enabled');
+        addAssistantMessage('Reduced motion enabled');
+        return;
+      }
+    }
+
+    // Disable adaptive features
+    if (cleanCommand.includes('disable') || cleanCommand.includes('turn off') || cleanCommand.includes('remove')) {
+      if (cleanCommand.includes('high contrast')) {
+        applyAdaptiveFeature('highContrast', false);
+        toast.success('🎨 High contrast disabled');
+        addAssistantMessage('High contrast disabled');
+        return;
+      }
+      if (cleanCommand.includes('large text') || cleanCommand.includes('big text')) {
+        applyAdaptiveFeature('largeText', false);
+        toast.success('📝 Large text disabled');
+        addAssistantMessage('Large text disabled');
+        return;
+      }
+      if (cleanCommand.includes('focus mode')) {
+        applyAdaptiveFeature('focusMode', false);
+        toast.success('🎯 Focus mode disabled');
+        addAssistantMessage('Focus mode disabled');
         return;
       }
     }
 
     // Show cart
     if (cleanCommand.includes('show') && cleanCommand.includes('cart')) {
-      navigate('/cart');
-      toast.success('🛒 Opening cart');
-      addAssistantMessage('OK, showing cart');
+      navigate('/dashboard');
+      toast.success('🛒 Opening dashboard with cart');
+      addAssistantMessage('OK, showing cart on dashboard');
       return;
     }
 
@@ -533,21 +596,106 @@ const VoiceAssistant = () => {
     ]);
   };
 
+  // Apply adaptive features
+  const applyAdaptiveFeature = (feature, enabled) => {
+    console.log(`Applying adaptive feature: ${feature} = ${enabled}`);
+
+    // Apply to document body for immediate effect
+    const body = document.body;
+
+    switch (feature) {
+      case 'highContrast':
+        if (enabled) {
+          body.classList.add('high-contrast');
+          body.style.filter = 'contrast(150%) brightness(120%)';
+        } else {
+          body.classList.remove('high-contrast');
+          body.style.filter = '';
+        }
+        break;
+
+      case 'largeText':
+        if (enabled) {
+          body.classList.add('large-text');
+          body.style.fontSize = '120%';
+        } else {
+          body.classList.remove('large-text');
+          body.style.fontSize = '';
+        }
+        break;
+
+      case 'focusMode':
+        if (enabled) {
+          body.classList.add('focus-mode');
+          // Add focus styles
+          const style = document.createElement('style');
+          style.textContent = `
+            .focus-mode * { transition: none !important; }
+            .focus-mode *:focus { outline: 3px solid #007bff !important; }
+          `;
+          document.head.appendChild(style);
+        } else {
+          body.classList.remove('focus-mode');
+        }
+        break;
+
+      case 'reducedMotion':
+        if (enabled) {
+          body.classList.add('reduced-motion');
+          const style = document.createElement('style');
+          style.textContent = `
+            .reduced-motion *, .reduced-motion *::before, .reduced-motion *::after {
+              animation-duration: 0.01ms !important;
+              animation-iteration-count: 1 !important;
+              transition-duration: 0.01ms !important;
+            }
+          `;
+          document.head.appendChild(style);
+        } else {
+          body.classList.remove('reduced-motion');
+        }
+        break;
+    }
+  };
+
   const extractItemName = (command) => {
-    // Extract item name from commands like "add headphones to cart"
+    console.log('Extracting item from command:', command);
+
+    // More comprehensive patterns for item extraction
     const patterns = [
       /add\s+(.+?)\s+to\s+cart/i,
+      /add\s+(.+?)\s+cart/i,
       /add\s+(.+)/i,
+      /get\s+me\s+(.+)/i,
       /get\s+(.+)/i,
-      /buy\s+(.+)/i
+      /buy\s+(.+)/i,
+      /purchase\s+(.+)/i,
+      /i\s+want\s+(.+)/i,
+      /i\s+need\s+(.+)/i
     ];
 
     for (const pattern of patterns) {
       const match = command.match(pattern);
       if (match && match[1]) {
-        return match[1].trim();
+        let item = match[1].trim();
+        // Clean up common words
+        item = item.replace(/\s+(to\s+cart|cart|please|now)$/i, '');
+        item = item.replace(/^(a|an|some|the)\s+/i, '');
+        console.log('Extracted item:', item);
+        return item;
       }
     }
+
+    // If no pattern matches, try to find known product names
+    const knownProducts = ['headphones', 'laptop', 'phone', 'tablet', 'mouse', 'keyboard', 'speaker', 'charger', 'book', 'shirt', 'jeans', 'shoes'];
+    for (const product of knownProducts) {
+      if (command.includes(product)) {
+        console.log('Found known product:', product);
+        return product;
+      }
+    }
+
+    console.log('No item extracted');
     return null;
   };
 
