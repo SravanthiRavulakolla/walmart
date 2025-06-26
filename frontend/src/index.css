@@ -1,0 +1,555 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Adaptive Shopping Experience Styles */
+
+/* Simplified Layout */
+.adaptive-simplified {
+  --spacing-reduced: 0.75;
+}
+
+.adaptive-simplified * {
+  border-radius: 4px !important;
+}
+
+.adaptive-simplified .grid {
+  grid-gap: calc(1rem * var(--spacing-reduced, 1)) !important;
+}
+
+.adaptive-simplified .space-x-4 > * + * {
+  margin-left: calc(1rem * var(--spacing-reduced, 1)) !important;
+}
+
+.adaptive-simplified .space-y-4 > * + * {
+  margin-top: calc(1rem * var(--spacing-reduced, 1)) !important;
+}
+
+/* Hide non-essential elements in simplified mode */
+.adaptive-simplified .decoration,
+.adaptive-simplified .badge,
+.adaptive-simplified .tooltip,
+.adaptive-simplified .secondary-info {
+  display: none !important;
+}
+
+/* Reduced Animations */
+.adaptive-reduced-animations *,
+.adaptive-reduced-animations *::before,
+.adaptive-reduced-animations *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0ms !important;
+}
+
+/* Focus Mode */
+.adaptive-focus-mode {
+  background: #f8fafc !important;
+}
+
+.adaptive-focus-mode .sidebar,
+.adaptive-focus-mode .advertisement,
+.adaptive-focus-mode .recommendation,
+.adaptive-focus-mode .social-share {
+  display: none !important;
+}
+
+.adaptive-focus-mode .main-content {
+  max-width: 800px !important;
+  margin: 0 auto !important;
+  padding: 2rem !important;
+}
+
+/* High Contrast Mode */
+.adaptive-high-contrast {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+.adaptive-high-contrast * {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+.adaptive-high-contrast button,
+.adaptive-high-contrast .btn {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+.adaptive-high-contrast button:hover,
+.adaptive-high-contrast .btn:hover {
+  background: #ffff00 !important;
+  color: #000000 !important;
+}
+
+.adaptive-high-contrast input,
+.adaptive-high-contrast select,
+.adaptive-high-contrast textarea {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+/* Large Text Mode */
+.adaptive-large-text {
+  font-size: 1.25em !important;
+  line-height: 1.6 !important;
+}
+
+.adaptive-large-text h1 { font-size: 2.5em !important; }
+.adaptive-large-text h2 { font-size: 2em !important; }
+.adaptive-large-text h3 { font-size: 1.75em !important; }
+.adaptive-large-text h4 { font-size: 1.5em !important; }
+.adaptive-large-text h5 { font-size: 1.25em !important; }
+.adaptive-large-text h6 { font-size: 1.125em !important; }
+
+.adaptive-large-text button,
+.adaptive-large-text .btn {
+  font-size: 1.125em !important;
+  padding: 0.75rem 1.5rem !important;
+}
+
+/* Reduced Colors Mode */
+.adaptive-reduced-colors {
+  filter: saturate(0.3) !important;
+}
+
+.adaptive-reduced-colors * {
+  filter: saturate(0.3) !important;
+}
+
+/* Calming Mode */
+.adaptive-calming-mode {
+  background: linear-gradient(135deg, #e0f2fe 0%, #f3e5f5 100%) !important;
+}
+
+.adaptive-calming-mode * {
+  color: #37474f !important;
+}
+
+.adaptive-calming-mode button,
+.adaptive-calming-mode .btn {
+  background: #81c784 !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(129, 199, 132, 0.3) !important;
+}
+
+.adaptive-calming-mode button:hover,
+.adaptive-calming-mode .btn:hover {
+  background: #66bb6a !important;
+  transform: translateY(-1px) !important;
+}
+
+.adaptive-calming-mode .card,
+.adaptive-calming-mode .panel {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid rgba(129, 199, 132, 0.2) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Distraction-Free Mode */
+.adaptive-distraction-free .sidebar,
+.adaptive-distraction-free .advertisement,
+.adaptive-distraction-free .popup,
+.adaptive-distraction-free .modal,
+.adaptive-distraction-free .notification,
+.adaptive-distraction-free .alert:not(.error),
+.adaptive-distraction-free .banner,
+.adaptive-distraction-free .promotion {
+  display: none !important;
+}
+
+.adaptive-distraction-free .main-content {
+  width: 100% !important;
+  max-width: 900px !important;
+  margin: 0 auto !important;
+}
+
+/* ADHD Support */
+.adaptive-simplified.adhd-support {
+  --focus-color: #3b82f6;
+}
+
+.adhd-support *:focus {
+  outline: 3px solid var(--focus-color) !important;
+  outline-offset: 2px !important;
+}
+
+.adhd-support .important {
+  border-left: 4px solid var(--focus-color) !important;
+  padding-left: 1rem !important;
+}
+
+/* Autism Support */
+.autism-support {
+  --consistent-spacing: 1rem;
+}
+
+.autism-support * {
+  margin: var(--consistent-spacing) !important;
+  padding: var(--consistent-spacing) !important;
+}
+
+.autism-support button,
+.autism-support .btn {
+  border-radius: 0 !important;
+  transition: none !important;
+}
+
+/* Dyslexia Support */
+.dyslexia-support {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', cursive !important;
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.1em !important;
+}
+
+.dyslexia-support p {
+  line-height: 1.8 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Stress Detection Visual Feedback */
+.stress-detected {
+  border: 2px solid #fbbf24 !important;
+  background: #fef3c7 !important;
+}
+
+.stress-detected::before {
+  content: "⚠️ Stress detected - Interface adapting...";
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #f59e0b;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  z-index: 9999;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Smooth transitions for adaptive changes */
+.adaptive-transition {
+  transition: all 0.3s ease-in-out !important;
+}
+
+/* Responsive adjustments for adaptive features */
+@media (max-width: 768px) {
+  .adaptive-large-text {
+    font-size: 1.125em !important;
+  }
+
+  .adaptive-simplified .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .adaptive-focus-mode .main-content {
+    padding: 1rem !important;
+  }
+}
+
+/* Print styles for adaptive features */
+@media print {
+  .adaptive-high-contrast {
+    background: white !important;
+    color: black !important;
+  }
+
+  .adaptive-calming-mode {
+    background: white !important;
+  }
+}
+
+/* Custom CSS Variables for Theming */
+:root {
+  /* Default Theme */
+  --color-primary: #004c91;
+  --color-secondary: #ffc220;
+  --color-accent: #ff6900;
+  --color-background: #ffffff;
+  --color-surface: #f8f9fa;
+  --color-text: #1f2937;
+  --color-text-secondary: #6b7280;
+  --color-border: #e5e7eb;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  
+  /* Typography */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 250ms ease-in-out;
+  --transition-slow: 350ms ease-in-out;
+}
+
+/* High Contrast Theme */
+[data-theme="high-contrast"] {
+  --color-primary: #000000;
+  --color-secondary: #ffffff;
+  --color-accent: #ffff00;
+  --color-background: #000000;
+  --color-surface: #1a1a1a;
+  --color-text: #ffffff;
+  --color-text-secondary: #cccccc;
+  --color-border: #ffffff;
+  --color-success: #00ff00;
+  --color-warning: #ffff00;
+  --color-error: #ff0000;
+  --color-info: #00ffff;
+}
+
+/* Low Stimulation Theme */
+[data-theme="low-stimulation"] {
+  --color-primary: #6b7280;
+  --color-secondary: #9ca3af;
+  --color-accent: #d1d5db;
+  --color-background: #f9fafb;
+  --color-surface: #ffffff;
+  --color-text: #374151;
+  --color-text-secondary: #6b7280;
+  --color-border: #e5e7eb;
+  --color-success: #6b7280;
+  --color-warning: #9ca3af;
+  --color-error: #6b7280;
+  --color-info: #9ca3af;
+}
+
+/* Grayscale Theme */
+[data-theme="grayscale"] {
+  filter: grayscale(100%);
+}
+
+/* Font Size Adjustments */
+[data-font-size="small"] {
+  --font-size-xs: 0.625rem;
+  --font-size-sm: 0.75rem;
+  --font-size-base: 0.875rem;
+  --font-size-lg: 1rem;
+  --font-size-xl: 1.125rem;
+  --font-size-2xl: 1.25rem;
+  --font-size-3xl: 1.5rem;
+  --font-size-4xl: 1.875rem;
+}
+
+[data-font-size="large"] {
+  --font-size-xs: 0.875rem;
+  --font-size-sm: 1rem;
+  --font-size-base: 1.125rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 1.875rem;
+  --font-size-3xl: 2.25rem;
+  --font-size-4xl: 3rem;
+}
+
+[data-font-size="extra-large"] {
+  --font-size-xs: 1rem;
+  --font-size-sm: 1.125rem;
+  --font-size-base: 1.25rem;
+  --font-size-lg: 1.5rem;
+  --font-size-xl: 1.875rem;
+  --font-size-2xl: 2.25rem;
+  --font-size-3xl: 3rem;
+  --font-size-4xl: 3.75rem;
+}
+
+/* Dyslexic Font */
+[data-font-family="dyslexic"] {
+  font-family: 'OpenDyslexic', Arial, sans-serif !important;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus Styles for Accessibility */
+*:focus {
+  outline: 2px solid var(--color-info);
+  outline-offset: 2px;
+}
+
+/* Custom Focus Ring */
+.focus-ring:focus {
+  @apply ring-2 ring-blue-500 ring-offset-2 outline-none;
+}
+
+/* Button Base Styles */
+.btn {
+  @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-primary {
+  @apply bg-walmart-blue text-white hover:bg-blue-700 focus:ring-blue-500;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500;
+}
+
+.btn-success {
+  @apply bg-green-600 text-white hover:bg-green-700 focus:ring-green-500;
+}
+
+.btn-warning {
+  @apply bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-500;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+}
+
+/* Input Base Styles */
+.input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed;
+}
+
+/* Card Styles */
+.card {
+  @apply bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden;
+}
+
+.card-header {
+  @apply px-6 py-4 border-b border-gray-200 bg-gray-50;
+}
+
+.card-body {
+  @apply px-6 py-4;
+}
+
+.card-footer {
+  @apply px-6 py-4 border-t border-gray-200 bg-gray-50;
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.pulse-slow {
+  animation: pulse 3s infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(20px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+/* Loading States */
+.loading {
+  @apply animate-pulse;
+}
+
+.skeleton {
+  @apply bg-gray-200 rounded animate-pulse;
+}
+
+/* Accessibility Helpers */
+.sr-only {
+  @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+}
+
+.not-sr-only {
+  @apply static w-auto h-auto p-0 m-0 overflow-visible whitespace-normal;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .btn-primary {
+    @apply border-2 border-white;
+  }
+  
+  .input {
+    @apply border-2 border-gray-800;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}

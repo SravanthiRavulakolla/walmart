@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/walmart-icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Walmart SenseEase - Adaptive Shopping Experience for Neurodiverse Users" />
+    <meta name="keywords" content="walmart, accessibility, neurodiversity, shopping, ecommerce" />
+    
+    <!-- Accessibility -->
+    <meta name="theme-color" content="#004c91" />
+    <meta name="color-scheme" content="light dark" />
+    
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- OpenDyslexic font for accessibility -->
+    <link href="https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap" rel="stylesheet">
+    
+    <title>Walmart SenseEase - Shop Smart. Shop Calm.</title>
+    
+    <style>
+      /* Critical CSS for initial load */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #ffffff;
+      }
+      
+      /* Loading spinner */
+      .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: 50px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #004c91;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+      }
+      
+      @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+      
+      /* High contrast mode */
+      @media (prefers-contrast: high) {
+        body {
+          background-color: #000000;
+          color: #ffffff;
+        }
+      }
+      
+      /* Reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+      
+      /* Focus styles for keyboard navigation */
+      *:focus {
+        outline: 2px solid #0066cc;
+        outline-offset: 2px;
+      }
+      
+      /* Skip to main content link */
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 6px;
+        background: #004c91;
+        color: white;
+        padding: 8px;
+        text-decoration: none;
+        border-radius: 4px;
+        z-index: 10000;
+      }
+      
+      .skip-link:focus {
+        top: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Skip to main content for screen readers -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Loading spinner -->
+    <div class="loading-spinner" id="loading-spinner"></div>
+    
+    <!-- React app root -->
+    <div id="root" role="main" aria-label="Walmart SenseEase Application"></div>
+    
+    <!-- Remove loading spinner when React loads -->
+    <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          const spinner = document.getElementById('loading-spinner');
+          if (spinner) {
+            spinner.style.display = 'none';
+          }
+        }, 1000);
+      });
+    </script>
+    
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
