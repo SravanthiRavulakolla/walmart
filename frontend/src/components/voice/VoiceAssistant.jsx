@@ -109,6 +109,17 @@ const VoiceAssistant = () => {
     }
   };
 
+  // Text-to-speech function
+  const speak = (text) => {
+    if (settings.voiceFeedback && 'speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+      utterance.volume = 0.8;
+      speechSynthesis.speak(utterance);
+    }
+  };
+
   // Handle wake word detection
   const handleWakeWord = () => {
     setCommandMode(true);
@@ -120,6 +131,9 @@ const VoiceAssistant = () => {
         duration: 1500,
         icon: '🎤'
       });
+
+      // Audio feedback
+      speak("Yes, I'm listening. How can I help you?");
     }
   };
 
@@ -362,7 +376,7 @@ const VoiceAssistant = () => {
       const started = await voiceServiceRef.current.start();
       if (started) {
         setIsActive(true);
-        toast.success('Voice assistant enabled - Say "Hey Sense" to activate');
+        toast.success('Voice assistant enabled - Say "Hey SenseEase" to activate');
       }
     }
   };
@@ -400,11 +414,11 @@ const VoiceAssistant = () => {
       {
         type: 'assistant',
         message: `Try these voice commands:
-• "Hey Sense, take me to products"
-• "Sense, add headphones to cart"
-• "Hey Sense, I want a laptop"
-• "Sense, show my cart"
-• "Hey Sense, search for phones"`,
+• "Hey SenseEase, take me to products"
+• "SenseEase, add headphones to cart"
+• "Hey SenseEase, I want a laptop"
+• "SenseEase, show my cart"
+• "Hey SenseEase, search for phones"`,
         timestamp: Date.now()
       }
     ]);
@@ -463,9 +477,15 @@ const VoiceAssistant = () => {
 
     // Remove wake words
     const cleanCommand = lowerCommand
+      .replace(/hey senseease/gi, '')
+      .replace(/hey sense ease/gi, '')
       .replace(/hey sense/gi, '')
+      .replace(/hi senseease/gi, '')
       .replace(/hi sense/gi, '')
+      .replace(/ok senseease/gi, '')
       .replace(/ok sense/gi, '')
+      .replace(/senseease/gi, '')
+      .replace(/sense ease/gi, '')
       .replace(/sense/gi, '')
       .trim();
 
@@ -648,6 +668,11 @@ const VoiceAssistant = () => {
       }, 100);
       return newConversation;
     });
+
+    // Add voice feedback
+    if (settings.voiceFeedback) {
+      speak(message);
+    }
   };
 
   // Apply adaptive features
@@ -1043,7 +1068,7 @@ const VoiceAssistant = () => {
                   ) : commandMode ? (
                     <span className="text-green-600">🎯 Ready for command</span>
                   ) : (
-                    <span className="text-gray-600">💬 Say "Hey Sense" to start</span>
+                    <span className="text-gray-600">💬 Say "Hey SenseEase" to start</span>
                   )}
                 </p>
               </div>
@@ -1082,9 +1107,9 @@ const VoiceAssistant = () => {
                 <div className="bg-gradient-to-r from-blue-50 to-green-50 p-4 rounded-lg mb-4">
                   <p className="font-medium text-gray-800 mb-2">Try saying:</p>
                   <div className="text-sm text-gray-700 space-y-1">
-                    <p className="bg-white px-3 py-1 rounded-full">"Hey Sense, take me to products"</p>
-                    <p className="bg-white px-3 py-1 rounded-full">"Sense, add headphones to cart"</p>
-                    <p className="bg-white px-3 py-1 rounded-full">"Hey Sense, show my cart"</p>
+                    <p className="bg-white px-3 py-1 rounded-full">"Hey SenseEase, take me to products"</p>
+                    <p className="bg-white px-3 py-1 rounded-full">"SenseEase, add headphones to cart"</p>
+                    <p className="bg-white px-3 py-1 rounded-full">"Hey SenseEase, show my cart"</p>
                   </div>
                 </div>
               </div>

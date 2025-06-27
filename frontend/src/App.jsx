@@ -8,342 +8,10 @@ import VoiceTestPage from './components/voice/VoiceTestPage';
 import CartPage from './components/CartPage';
 import useAdaptiveBehavior from './hooks/useAdaptiveBehavior';
 
-// Homepage
-const HomePage = () => {
-  const { isAuthenticated, user } = useAuth();
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="flex-shrink-0 flex items-center">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">SE</span>
-                </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">SenseEase</span>
-                <span className="ml-2 text-sm text-gray-500">by Walmart</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              {isAuthenticated ? (
-                <>
-                  <span className="text-gray-700">Hello, {user?.firstName || 'User'}!</span>
-                  <Link to="/dashboard" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                    Dashboard
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/login" className="text-gray-700 hover:text-gray-900">Sign In</Link>
-                  <Link to="/register" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                    Get Started
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
 
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-blue-600 to-purple-700 text-white overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}></div>
-        </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Shop Smart.<br />
-                <span className="text-yellow-300">Shop Calm.</span>
-              </h1>
-              <p className="text-xl md:text-2xl mb-8 text-blue-100">
-                An adaptive Walmart shopping experience tailored for cognitive and sensory needs.
-              </p>
 
-              {/* Feature highlights */}
-              <div className="flex flex-wrap gap-4 mb-8">
-                <div className="flex items-center bg-white bg-opacity-20 rounded-full px-4 py-2">
-                  <span className="text-2xl mr-2">🧠</span>
-                  <span className="text-sm font-medium">AI-Powered Adaptation</span>
-                </div>
-                <div className="flex items-center bg-white bg-opacity-20 rounded-full px-4 py-2">
-                  <span className="text-2xl mr-2">🎯</span>
-                  <span className="text-sm font-medium">Focus Mode</span>
-                </div>
-                <div className="flex items-center bg-white bg-opacity-20 rounded-full px-4 py-2">
-                  <span className="text-2xl mr-2">🎤</span>
-                  <span className="text-sm font-medium">Voice Search</span>
-                </div>
-              </div>
-
-              {!isAuthenticated && (
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link to="/register" className="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-colors text-center">
-                    Start Shopping Today
-                  </Link>
-                  <Link to="/login" className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors text-center">
-                    Sign In
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Hero Image */}
-            <div className="relative">
-              <div className="relative z-10 bg-white rounded-2xl shadow-2xl p-8">
-                <div className="text-center">
-                  <div className="text-6xl mb-4">🛒</div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Adaptive Shopping Interface</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
-                      <span className="text-gray-700">🎯 Focus Mode</span>
-                      <div className="w-12 h-6 bg-green-500 rounded-full relative">
-                        <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5"></div>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
-                      <span className="text-gray-700">🌓 High Contrast</span>
-                      <div className="w-12 h-6 bg-gray-300 rounded-full relative">
-                        <div className="w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5"></div>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
-                      <span className="text-gray-700">🔍 Large Text</span>
-                      <div className="w-12 h-6 bg-blue-500 rounded-full relative">
-                        <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating elements */}
-              <div className="absolute -top-4 -left-4 w-20 h-20 bg-yellow-400 rounded-full opacity-80 animate-pulse"></div>
-              <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-pink-400 rounded-full opacity-60 animate-bounce"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Designed for Everyone
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our adaptive technology creates a personalized shopping experience that understands and responds to your unique needs.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center group">
-              <div className="relative mb-6">
-                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mx-auto flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">🧠</span>
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full"></div>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">ADHD Support</h3>
-              <p className="text-gray-600">
-                Distraction-free interface with focus mode and simplified layouts to help you stay on track.
-              </p>
-            </div>
-
-            <div className="text-center group">
-              <div className="relative mb-6">
-                <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl mx-auto flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">🎯</span>
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-pink-400 rounded-full"></div>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Autism Friendly</h3>
-              <p className="text-gray-600">
-                Predictable layouts, reduced sensory overload, and calming color schemes for comfortable shopping.
-              </p>
-            </div>
-
-            <div className="text-center group">
-              <div className="relative mb-6">
-                <div className="w-20 h-20 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl mx-auto flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">👁️</span>
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-400 rounded-full"></div>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Visual Accessibility</h3>
-              <p className="text-gray-600">
-                High contrast modes, large text options, and dyslexia-friendly fonts for better readability.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Stats Section */}
-      <div className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold text-blue-600 mb-2">15%</div>
-              <div className="text-gray-600">of people are neurodiverse</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-green-600 mb-2">85%</div>
-              <div className="text-gray-600">report better shopping experience</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-purple-600 mb-2">3x</div>
-              <div className="text-gray-600">faster task completion</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-orange-600 mb-2">24/7</div>
-              <div className="text-gray-600">adaptive support available</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Product Showcase */}
-      <div className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Accessibility-First Products
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover products specifically chosen for their accessibility features and neurodiverse-friendly design.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-xl mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl">📱</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Smart Devices</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Voice-controlled devices with accessibility features
-                </p>
-                <div className="flex items-center justify-center space-x-2">
-                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Voice Control</span>
-                  <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Large Display</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-xl mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl">🪑</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Ergonomic Furniture</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Sensory-friendly seating and workspace solutions
-                </p>
-                <div className="flex items-center justify-center space-x-2">
-                  <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Sensory Friendly</span>
-                  <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">Adjustable</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-xl mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl">🎧</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Audio Equipment</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Noise-canceling and sensory regulation tools
-                </p>
-                <div className="flex items-center justify-center space-x-2">
-                  <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Noise Canceling</span>
-                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Adaptive</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* CTA Section */}
-      <div className="py-20 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Experience Adaptive Shopping?
-          </h2>
-          <p className="text-xl mb-8 text-purple-100">
-            Join thousands of users who have discovered a more comfortable and accessible way to shop online.
-          </p>
-          {!isAuthenticated && (
-            <Link to="/register" className="bg-white text-purple-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
-              Get Started Free
-            </Link>
-          )}
-        </div>
-      </div>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center mb-4">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">SE</span>
-                </div>
-                <span className="ml-2 text-xl font-bold">SenseEase</span>
-              </div>
-              <p className="text-gray-400">
-                Making online shopping accessible and comfortable for everyone.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Features</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>Adaptive Interface</li>
-                <li>Voice Search</li>
-                <li>Focus Mode</li>
-                <li>Accessibility Tools</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>ADHD Resources</li>
-                <li>Autism Support</li>
-                <li>Visual Accessibility</li>
-                <li>Help Center</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>About Us</li>
-                <li>Privacy Policy</li>
-                <li>Terms of Service</li>
-                <li>Contact</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 SenseEase by Walmart. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-};
 
 // Login Page
 const LoginPage = () => {
@@ -789,7 +457,7 @@ const PrepPalPage = () => {
 
 // Products Page - Main USP Feature
 const ProductsPage = () => {
-  const { addToCart } = useAuth();
+  const { addToCart, logout, cart } = useAuth();
   const { isEnabled: adaptiveEnabled, stressLevel, adaptiveSettings } = useAdaptiveShopping();
 
   // Enable behavior tracking for this page
@@ -962,13 +630,24 @@ const ProductsPage = () => {
             )}
           </div>
           <div className="flex items-center space-x-4">
-            {adaptiveEnabled && (
-              <Link to="/adaptive" className="text-purple-600 hover:text-purple-800 text-sm">
-                ⚙️ Adaptive Settings
-              </Link>
-            )}
-            <Link to="/dashboard" className="text-blue-600 hover:text-blue-800">Dashboard</Link>
-            <Link to="/" className="text-blue-600 hover:text-blue-800">Home</Link>
+            <Link to="/" className="text-blue-600 hover:text-blue-800 font-medium">Home</Link>
+            <Link to="/preppal" className="text-blue-600 hover:text-blue-800 font-medium">PrepPal</Link>
+            <Link to="/adaptive" className="text-blue-600 hover:text-blue-800 font-medium">Adaptive Shopping</Link>
+            <Link to="/cart" className="relative text-blue-600 hover:text-blue-800 font-medium flex items-center space-x-1">
+              <span>🛒</span>
+              <span>Cart</span>
+              {cart.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {cart.length}
+                </span>
+              )}
+            </Link>
+            <button
+              onClick={logout}
+              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+            >
+              Logout
+            </button>
           </div>
         </div>
 
@@ -1208,6 +887,7 @@ const ProductsPage = () => {
   );
 };
 
+
 // Adaptive Shopping Page
 const AdaptiveShoppingPage = () => {
   return (
@@ -1274,118 +954,7 @@ const AdaptiveShoppingPage = () => {
   );
 };
 
-// Dashboard Page
-const DashboardPage = () => {
-  const { user, logout, cart, removeFromCart, clearCart } = useAuth();
-  const [showCart, setShowCart] = useState(false);
 
-  return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => setShowCart(!showCart)}
-              className="relative bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center space-x-2"
-            >
-              <span>🛒</span>
-              <span>Cart</span>
-              {cart.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center">
-                  {cart.length}
-                </span>
-              )}
-            </button>
-            <Link to="/" className="text-blue-600 hover:text-blue-800">Home</Link>
-            <button
-              onClick={logout}
-              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Welcome, {user?.firstName}!</h2>
-          <p className="text-gray-600 mb-4">Email: {user?.email}</p>
-          <p className="text-gray-600">You are successfully logged in with JWT authentication!</p>
-        </div>
-
-        {/* Cart Display */}
-        {showCart && (
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Your Cart ({cart.length} items)</h2>
-              {cart.length > 0 && (
-                <button
-                  onClick={clearCart}
-                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm"
-                >
-                  Clear Cart
-                </button>
-              )}
-            </div>
-
-            {cart.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">Your cart is empty. Add items from PrepPal!</p>
-            ) : (
-              <div className="space-y-3">
-                {cart.map((item) => (
-                  <div key={item.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div className="flex-1">
-                      <span className="font-medium text-gray-900">{item.name}</span>
-                      <div className="text-sm text-gray-500">
-                        {item.category} • Quantity: {item.quantity}
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="text-red-600 hover:text-red-800 text-sm px-3 py-1 border border-red-300 rounded hover:bg-red-50"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ))}
-                <div className="mt-4 pt-4 border-t">
-                  <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 font-medium">
-                    Proceed to Checkout ({cart.reduce((total, item) => total + item.quantity, 0)} items)
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Feature Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link to="/preppal" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-            <div className="text-4xl mb-4">🧠</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">PrepPal AI Assistant</h3>
-            <p className="text-gray-600">Generate smart shopping lists from natural language descriptions. Just tell PrepPal what you're planning!</p>
-            <div className="mt-4 text-blue-600 font-medium">Try PrepPal →</div>
-          </Link>
-
-          <Link to="/products" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-            <div className="text-4xl mb-4">🛒</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Accessible Products</h3>
-            <p className="text-gray-600">Browse our accessible product catalog with voice search, adaptive UI, and accessibility features.</p>
-            <div className="mt-4 text-blue-600 font-medium">Shop Now →</div>
-          </Link>
-
-          <Link to="/adaptive" className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border-2 border-purple-200">
-            <div className="text-4xl mb-4">🧠✨</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Adaptive Shopping</h3>
-            <p className="text-gray-600">AI-powered interface that adapts to your cognitive and sensory needs in real-time.</p>
-            <div className="mt-4 text-purple-600 font-medium">Configure Now →</div>
-            <div className="mt-2 text-xs text-purple-500 bg-purple-50 px-2 py-1 rounded">🌟 NEW FEATURE</div>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 // Main App
 function App() {
@@ -1394,18 +963,14 @@ function App() {
   return (
     <AdaptiveShoppingProvider>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={isAuthenticated ? <ProductsPage /> : <Navigate to="/login" replace />} />
         <Route
           path="/login"
-          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />}
+          element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />}
         />
         <Route
           path="/register"
-          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <RegisterPage />}
-        />
-        <Route
-          path="/dashboard"
-          element={isAuthenticated ? <DashboardPage /> : <Navigate to="/login" replace />}
+          element={isAuthenticated ? <Navigate to="/" replace /> : <RegisterPage />}
         />
         <Route
           path="/preppal"
@@ -1413,7 +978,7 @@ function App() {
         />
         <Route
           path="/products"
-          element={isAuthenticated ? <ProductsPage /> : <Navigate to="/login" replace />}
+          element={<Navigate to="/" replace />}
         />
         <Route
           path="/cart"

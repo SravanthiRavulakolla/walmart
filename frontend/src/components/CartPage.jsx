@@ -1,11 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/SimpleAuthContext';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, CreditCard, Shield, Truck } from 'lucide-react';
 
 const CartPage = () => {
   const navigate = useNavigate();
-  const { cart, removeFromCart, clearCart, updateQuantity, getCartTotal, getCartCount } = useAuth();
+  const { cart, removeFromCart, clearCart, updateQuantity, getCartTotal, getCartCount, logout } = useAuth();
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
@@ -22,19 +22,23 @@ const CartPage = () => {
   if (cart.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
+        {/* Header with Navigation */}
         <div className="bg-white shadow-sm border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              <button
-                onClick={() => navigate('/dashboard')}
-                className="flex items-center text-blue-600 hover:text-blue-700 font-medium"
-              >
-                <ArrowLeft className="w-5 h-5 mr-2" />
-                Continue Shopping
-              </button>
-              <h1 className="text-2xl font-bold text-gray-900">Your Cart</h1>
-              <div className="w-32"></div>
+              <h1 className="text-2xl font-bold text-gray-900">🛒 Shopping Cart</h1>
+              <div className="flex items-center space-x-4">
+                <Link to="/" className="text-blue-600 hover:text-blue-800 font-medium">Home</Link>
+                <Link to="/preppal" className="text-blue-600 hover:text-blue-800 font-medium">PrepPal</Link>
+                <Link to="/adaptive" className="text-blue-600 hover:text-blue-800 font-medium">Adaptive Shopping</Link>
+                <Link to="/cart" className="text-gray-500 font-medium">Cart</Link>
+                <button
+                  onClick={logout}
+                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -48,7 +52,7 @@ const CartPage = () => {
               Looks like you haven't added anything to your cart yet. Start shopping to fill it up!
             </p>
             <button
-              onClick={() => navigate('/products')}
+              onClick={() => navigate('/')}
               className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
               Start Shopping
@@ -61,26 +65,31 @@ const CartPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      {/* Header with Navigation */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center text-blue-600 hover:text-blue-700 font-medium"
-            >
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              Continue Shopping
-            </button>
             <h1 className="text-2xl font-bold text-gray-900">
-              Your Cart ({getCartCount()} {getCartCount() === 1 ? 'item' : 'items'})
+              🛒 Shopping Cart ({getCartCount()} {getCartCount() === 1 ? 'item' : 'items'})
             </h1>
-            <button
-              onClick={clearCart}
-              className="text-red-600 hover:text-red-700 font-medium"
-            >
-              Clear Cart
-            </button>
+            <div className="flex items-center space-x-4">
+              <Link to="/" className="text-blue-600 hover:text-blue-800 font-medium">Home</Link>
+              <Link to="/preppal" className="text-blue-600 hover:text-blue-800 font-medium">PrepPal</Link>
+              <Link to="/adaptive" className="text-blue-600 hover:text-blue-800 font-medium">Adaptive Shopping</Link>
+              <Link to="/cart" className="text-gray-500 font-medium">Cart</Link>
+              <button
+                onClick={clearCart}
+                className="text-red-600 hover:text-red-700 font-medium px-3 py-1 border border-red-300 rounded"
+              >
+                Clear Cart
+              </button>
+              <button
+                onClick={logout}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </div>
