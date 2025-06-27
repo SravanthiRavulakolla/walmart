@@ -2,7 +2,119 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Walmart Brand Colors */
+:root {
+  --walmart-blue: #004c91;
+  --walmart-yellow: #ffc220;
+  --walmart-orange: #ff6900;
+}
+
+/* Walmart Color Utilities */
+.bg-walmart-blue { background-color: var(--walmart-blue); }
+.bg-walmart-yellow { background-color: var(--walmart-yellow); }
+.bg-walmart-orange { background-color: var(--walmart-orange); }
+.text-walmart-blue { color: var(--walmart-blue); }
+.text-walmart-yellow { color: var(--walmart-yellow); }
+.text-walmart-orange { color: var(--walmart-orange); }
+.border-walmart-blue { border-color: var(--walmart-blue); }
+.border-walmart-yellow { border-color: var(--walmart-yellow); }
+.border-walmart-orange { border-color: var(--walmart-orange); }
+
 /* Adaptive Shopping Experience Styles */
+
+/* High Contrast Mode */
+.adaptive-high-contrast {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+.adaptive-high-contrast * {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+.adaptive-high-contrast button,
+.adaptive-high-contrast .btn {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+.adaptive-high-contrast button:hover,
+.adaptive-high-contrast .btn:hover {
+  background: #cccccc !important;
+  color: #000000 !important;
+}
+
+.adaptive-high-contrast input,
+.adaptive-high-contrast textarea,
+.adaptive-high-contrast select {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+/* Large Text Mode */
+.adaptive-large-text {
+  font-size: 1.25em !important;
+}
+
+.adaptive-large-text * {
+  font-size: inherit !important;
+  line-height: 1.6 !important;
+}
+
+.adaptive-large-text h1 { font-size: 2.5em !important; }
+.adaptive-large-text h2 { font-size: 2em !important; }
+.adaptive-large-text h3 { font-size: 1.75em !important; }
+.adaptive-large-text h4 { font-size: 1.5em !important; }
+.adaptive-large-text h5 { font-size: 1.25em !important; }
+.adaptive-large-text h6 { font-size: 1.125em !important; }
+
+/* Dyslexia-Friendly Font */
+.adaptive-dyslexia-font,
+.adaptive-dyslexia-font * {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', Arial, sans-serif !important;
+  letter-spacing: 0.1em !important;
+  word-spacing: 0.2em !important;
+  line-height: 1.8 !important;
+}
+
+/* Dark Mode */
+.adaptive-dark-mode {
+  background: #1a1a1a !important;
+  color: #e0e0e0 !important;
+}
+
+.adaptive-dark-mode * {
+  background: #1a1a1a !important;
+  color: #e0e0e0 !important;
+}
+
+.adaptive-dark-mode .bg-white {
+  background: #2d2d2d !important;
+}
+
+.adaptive-dark-mode .bg-gray-50 {
+  background: #333333 !important;
+}
+
+.adaptive-dark-mode .bg-gray-100 {
+  background: #404040 !important;
+}
+
+.adaptive-dark-mode .text-gray-900 {
+  color: #e0e0e0 !important;
+}
+
+.adaptive-dark-mode .text-gray-600 {
+  color: #b0b0b0 !important;
+}
+
+.adaptive-dark-mode .border-gray-200 {
+  border-color: #555555 !important;
+}
 
 /* Simplified Layout */
 .adaptive-simplified {
@@ -46,6 +158,50 @@
 /* Focus Mode */
 .adaptive-focus-mode {
   background: #f8fafc !important;
+}
+
+.adaptive-focus-mode .decoration,
+.adaptive-focus-mode .non-essential {
+  display: none !important;
+}
+
+.adaptive-focus-mode * {
+  outline: 2px solid transparent !important;
+}
+
+.adaptive-focus-mode *:focus {
+  outline: 3px solid #0066cc !important;
+  outline-offset: 2px !important;
+}
+
+/* Calming Mode */
+.adaptive-calming-mode {
+  background: linear-gradient(135deg, #e8f5e8, #f0f8ff) !important;
+}
+
+.adaptive-calming-mode * {
+  color: #2d5a2d !important;
+}
+
+.adaptive-calming-mode .bg-walmart-blue {
+  background: #4a7c59 !important;
+}
+
+.adaptive-calming-mode .text-walmart-blue {
+  color: #2d5a2d !important;
+}
+
+/* Reduced Colors */
+.adaptive-reduced-colors * {
+  filter: grayscale(50%) !important;
+}
+
+.adaptive-reduced-colors .bg-walmart-blue {
+  background: #666666 !important;
+}
+
+.adaptive-reduced-colors .bg-walmart-yellow {
+  background: #cccccc !important;
 }
 
 .adaptive-focus-mode .sidebar,

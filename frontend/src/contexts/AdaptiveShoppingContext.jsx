@@ -35,8 +35,89 @@ export const AdaptiveShoppingProvider = ({ children }) => {
     reducedColors: false,
     calmingMode: false,
     distractionFree: false,
-    autoAdapt: true
+    autoAdapt: true,
+    reducedMotion: false,
+    voiceNavigation: false,
+    colorBlindSupport: false,
+    slowMode: false,
+    darkMode: false,
+    dyslexiaFont: false,
+    audioFeedback: false,
+    hapticFeedback: false,
+    screenReader: false,
+    keyboardNav: false,
+    stepByStep: false,
+    progressIndicators: false,
+    smartSuggestions: false,
+    errorPrevention: false,
+    confirmationPrompts: false
   });
+
+  // Apply accessibility settings to document
+  useEffect(() => {
+    const body = document.body;
+    const html = document.documentElement;
+
+    // Remove all adaptive classes first
+    body.classList.remove(
+      'adaptive-high-contrast',
+      'adaptive-large-text',
+      'adaptive-reduced-animations',
+      'adaptive-focus-mode',
+      'adaptive-calming-mode',
+      'adaptive-simplified',
+      'adaptive-reduced-colors',
+      'adaptive-dark-mode',
+      'adaptive-dyslexia-font',
+      'adaptive-reduced-motion'
+    );
+
+    // Apply active settings
+    if (adaptiveSettings.highContrast) {
+      body.classList.add('adaptive-high-contrast');
+    }
+    if (adaptiveSettings.largeText) {
+      body.classList.add('adaptive-large-text');
+    }
+    if (adaptiveSettings.reducedAnimations || adaptiveSettings.reducedMotion) {
+      body.classList.add('adaptive-reduced-animations');
+    }
+    if (adaptiveSettings.focusMode) {
+      body.classList.add('adaptive-focus-mode');
+    }
+    if (adaptiveSettings.calmingMode) {
+      body.classList.add('adaptive-calming-mode');
+    }
+    if (adaptiveSettings.simplifiedLayout) {
+      body.classList.add('adaptive-simplified');
+    }
+    if (adaptiveSettings.reducedColors) {
+      body.classList.add('adaptive-reduced-colors');
+    }
+    if (adaptiveSettings.darkMode) {
+      body.classList.add('adaptive-dark-mode');
+    }
+    if (adaptiveSettings.dyslexiaFont) {
+      body.classList.add('adaptive-dyslexia-font');
+    }
+
+    // Apply font family changes
+    if (adaptiveSettings.dyslexiaFont) {
+      html.style.fontFamily = 'OpenDyslexic, Arial, sans-serif';
+    } else {
+      html.style.fontFamily = '';
+    }
+
+    // Apply motion preferences
+    if (adaptiveSettings.reducedMotion || adaptiveSettings.reducedAnimations) {
+      html.style.setProperty('--animation-duration', '0.01ms');
+      html.style.setProperty('--transition-duration', '0.01ms');
+    } else {
+      html.style.removeProperty('--animation-duration');
+      html.style.removeProperty('--transition-duration');
+    }
+
+  }, [adaptiveSettings]);
 
   // Stress detection algorithm
   const calculateStressLevel = useCallback(() => {

@@ -1,11 +1,66 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/SimpleAuthContext';
+
+// Navigation Bar Component (copied from App.jsx)
+const NavigationBar = ({ currentPage = "" }) => {
+  const { logout, cart } = useAuth();
+
+  return (
+    <nav className="bg-white shadow-sm border-b sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
+            <h1 className="text-2xl font-bold text-gray-900">🛒 SenseEase</h1>
+          </div>
+          <div className="flex items-center space-x-6">
+            <Link
+              to="/"
+              className={`font-medium ${currentPage === 'home' ? 'text-gray-500' : 'text-blue-600 hover:text-blue-800'}`}
+            >
+              Home
+            </Link>
+            <Link
+              to="/preppal"
+              className={`font-medium ${currentPage === 'preppal' ? 'text-gray-500' : 'text-blue-600 hover:text-blue-800'}`}
+            >
+              PrepPal
+            </Link>
+            <Link
+              to="/adaptive"
+              className={`font-medium ${currentPage === 'adaptive' ? 'text-gray-500' : 'text-blue-600 hover:text-blue-800'}`}
+            >
+              Adaptive Shopping
+            </Link>
+            <Link
+              to="/cart"
+              className={`relative font-medium flex items-center space-x-1 ${currentPage === 'cart' ? 'text-gray-500' : 'text-blue-600 hover:text-blue-800'}`}
+            >
+              <span>🛒</span>
+              <span>Cart</span>
+              {cart.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {cart.length}
+                </span>
+              )}
+            </Link>
+            <button
+              onClick={logout}
+              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 font-medium"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, CreditCard, Shield, Truck } from 'lucide-react';
 
 const CartPage = () => {
   const navigate = useNavigate();
-  const { cart, removeFromCart, clearCart, updateQuantity, getCartTotal, getCartCount, logout } = useAuth();
+  const { cart, removeFromCart, clearCart, updateQuantity, getCartTotal, getCartCount } = useAuth();
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
@@ -21,27 +76,8 @@ const CartPage = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        {/* Header with Navigation */}
-        <div className="bg-white shadow-sm border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <h1 className="text-2xl font-bold text-gray-900">🛒 Shopping Cart</h1>
-              <div className="flex items-center space-x-4">
-                <Link to="/" className="text-blue-600 hover:text-blue-800 font-medium">Home</Link>
-                <Link to="/preppal" className="text-blue-600 hover:text-blue-800 font-medium">PrepPal</Link>
-                <Link to="/adaptive" className="text-blue-600 hover:text-blue-800 font-medium">Adaptive Shopping</Link>
-                <Link to="/cart" className="text-gray-500 font-medium">Cart</Link>
-                <button
-                  onClick={logout}
-                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                >
-                  Logout
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
+        <NavigationBar currentPage="cart" />
 
         {/* Empty Cart */}
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
@@ -64,38 +100,26 @@ const CartPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header with Navigation */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <h1 className="text-2xl font-bold text-gray-900">
-              🛒 Shopping Cart ({getCartCount()} {getCartCount() === 1 ? 'item' : 'items'})
-            </h1>
-            <div className="flex items-center space-x-4">
-              <Link to="/" className="text-blue-600 hover:text-blue-800 font-medium">Home</Link>
-              <Link to="/preppal" className="text-blue-600 hover:text-blue-800 font-medium">PrepPal</Link>
-              <Link to="/adaptive" className="text-blue-600 hover:text-blue-800 font-medium">Adaptive Shopping</Link>
-              <Link to="/cart" className="text-gray-500 font-medium">Cart</Link>
-              <button
-                onClick={clearCart}
-                className="text-red-600 hover:text-red-700 font-medium px-3 py-1 border border-red-300 rounded"
-              >
-                Clear Cart
-              </button>
-              <button
-                onClick={logout}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
+      <NavigationBar currentPage="cart" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">
+            🛒 Shopping Cart ({getCartCount()} {getCartCount() === 1 ? 'item' : 'items'})
+          </h1>
+          {cart.length > 0 && (
+            <button
+              onClick={clearCart}
+              className="text-red-600 hover:text-red-700 font-medium px-4 py-2 border border-red-300 rounded hover:bg-red-50"
+            >
+              Clear Cart
+            </button>
+          )}
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -204,6 +228,7 @@ const CartPage = () => {
                 Secure checkout powered by Walmart
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>

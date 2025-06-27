@@ -8,6 +8,86 @@ import VoiceTestPage from './components/voice/VoiceTestPage';
 import CartPage from './components/CartPage';
 import useAdaptiveBehavior from './hooks/useAdaptiveBehavior';
 
+// Walmart-style Navigation Bar Component
+const NavigationBar = ({ currentPage = "" }) => {
+  const { logout, cart } = useAuth();
+
+  return (
+    <nav className="bg-walmart-blue shadow-lg sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo Section */}
+          <div className="flex items-center space-x-3">
+            <div className="bg-walmart-yellow p-2 rounded-lg">
+              <span className="text-walmart-blue font-bold text-lg">SE</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white">SenseEase</h1>
+              <p className="text-xs text-blue-200">by Walmart</p>
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="flex items-center space-x-1">
+            <Link
+              to="/"
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                currentPage === 'home'
+                  ? 'bg-white bg-opacity-20 text-white'
+                  : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
+              }`}
+            >
+              Home
+            </Link>
+            <Link
+              to="/preppal"
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                currentPage === 'preppal'
+                  ? 'bg-white bg-opacity-20 text-white'
+                  : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
+              }`}
+            >
+              PrepPal
+            </Link>
+            <Link
+              to="/adaptive"
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                currentPage === 'adaptive'
+                  ? 'bg-white bg-opacity-20 text-white'
+                  : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
+              }`}
+            >
+              Adaptive Shopping
+            </Link>
+            <Link
+              to="/cart"
+              className={`relative px-4 py-2 rounded-lg font-medium flex items-center space-x-2 transition-all ${
+                currentPage === 'cart'
+                  ? 'bg-white bg-opacity-20 text-white'
+                  : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
+              }`}
+            >
+              <span className="text-lg">🛒</span>
+              <span>Cart</span>
+              {cart.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-walmart-yellow text-walmart-blue text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {cart.length}
+                </span>
+              )}
+            </Link>
+            <button
+              onClick={logout}
+              className="bg-walmart-yellow text-walmart-blue px-4 py-2 rounded-lg hover:bg-yellow-400 font-medium transition-colors ml-4"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
 
 
 
@@ -49,7 +129,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
       <div className="max-w-md w-full bg-white rounded-lg shadow p-8">
         <h2 className="text-2xl font-bold text-center mb-6">Sign In</h2>
         
@@ -67,7 +147,7 @@ const LoginPage = () => {
               required
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           
@@ -78,7 +158,7 @@ const LoginPage = () => {
               required
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           
@@ -147,7 +227,7 @@ const RegisterPage = () => {
 
       if (response.ok) {
         login(data.user, data.token);
-        navigate('/dashboard');
+        navigate('/');
       } else {
         setError(data.message || 'Registration failed');
       }
@@ -159,7 +239,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
       <div className="max-w-md w-full bg-white rounded-lg shadow p-8">
         <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
         
@@ -178,7 +258,7 @@ const RegisterPage = () => {
                 required
                 value={formData.firstName}
                 onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
             <div>
@@ -188,7 +268,7 @@ const RegisterPage = () => {
                 required
                 value={formData.lastName}
                 onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
@@ -200,7 +280,7 @@ const RegisterPage = () => {
               required
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           
@@ -211,7 +291,7 @@ const RegisterPage = () => {
               required
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           
@@ -222,7 +302,7 @@ const RegisterPage = () => {
               required
               value={formData.confirmPassword}
               onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           
@@ -247,7 +327,7 @@ const RegisterPage = () => {
 
 // PrepPal Page
 const PrepPalPage = () => {
-  const { addToCart } = useAuth();
+  const { addToCart, logout } = useAuth();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
@@ -328,14 +408,11 @@ const PrepPalPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
+      <NavigationBar currentPage="preppal" />
+      <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">🧠 PrepPal AI Assistant</h1>
-          <div className="space-x-4">
-            <Link to="/dashboard" className="text-blue-600 hover:text-blue-800">Dashboard</Link>
-            <Link to="/" className="text-blue-600 hover:text-blue-800">Home</Link>
-          </div>
         </div>
 
         {/* Conversation */}
@@ -380,7 +457,7 @@ const PrepPalPage = () => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && generateShoppingList()}
               placeholder="e.g., 'I'm making pasta for 4 people' or 'Planning a birthday party'"
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1 px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               disabled={loading}
             />
             <button
@@ -612,13 +689,14 @@ const ProductsPage = () => {
   };
 
   return (
-    <div className={`min-h-screen py-8 ${accessibilityMode === 'high-contrast' ? 'bg-black text-white' : 'bg-gray-50'}`}>
-      <div className="max-w-7xl mx-auto px-4">
+    <div className={`min-h-screen ${accessibilityMode === 'high-contrast' ? 'bg-black text-white' : 'bg-gradient-to-br from-purple-100 to-blue-100'}`}>
+      <NavigationBar currentPage="home" />
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center space-x-4">
             <h1 className={`text-3xl font-bold ${accessibilityMode === 'high-contrast' ? 'text-yellow-400' : 'text-gray-900'}`}>
-              🛒 Accessible Products
+              Accessible Products
             </h1>
             {adaptiveEnabled && (
               <div className="flex items-center space-x-2 bg-purple-100 px-3 py-1 rounded-full">
@@ -628,26 +706,6 @@ const ProductsPage = () => {
                 )}
               </div>
             )}
-          </div>
-          <div className="flex items-center space-x-4">
-            <Link to="/" className="text-blue-600 hover:text-blue-800 font-medium">Home</Link>
-            <Link to="/preppal" className="text-blue-600 hover:text-blue-800 font-medium">PrepPal</Link>
-            <Link to="/adaptive" className="text-blue-600 hover:text-blue-800 font-medium">Adaptive Shopping</Link>
-            <Link to="/cart" className="relative text-blue-600 hover:text-blue-800 font-medium flex items-center space-x-1">
-              <span>🛒</span>
-              <span>Cart</span>
-              {cart.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {cart.length}
-                </span>
-              )}
-            </Link>
-            <button
-              onClick={logout}
-              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-            >
-              Logout
-            </button>
           </div>
         </div>
 
@@ -701,7 +759,7 @@ const ProductsPage = () => {
                   className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     accessibilityMode === 'high-contrast'
                       ? 'bg-black text-yellow-400 border-yellow-400'
-                      : 'border-gray-300'
+                      : 'bg-white border-gray-300'
                   } ${accessibilityMode === 'large-text' ? 'text-lg' : ''}`}
                 />
                 <button
@@ -729,7 +787,7 @@ const ProductsPage = () => {
                 className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                   accessibilityMode === 'high-contrast'
                     ? 'bg-black text-yellow-400 border-yellow-400'
-                    : 'border-gray-300'
+                    : 'bg-white border-gray-300'
                 } ${accessibilityMode === 'large-text' ? 'text-lg' : ''}`}
               >
                 {categories.map(category => (
@@ -749,7 +807,7 @@ const ProductsPage = () => {
                 className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                   accessibilityMode === 'high-contrast'
                     ? 'bg-black text-yellow-400 border-yellow-400'
-                    : 'border-gray-300'
+                    : 'bg-white border-gray-300'
                 } ${accessibilityMode === 'large-text' ? 'text-lg' : ''}`}
               >
                 <option value="name">Name A-Z</option>
@@ -888,65 +946,128 @@ const ProductsPage = () => {
 };
 
 
-// Adaptive Shopping Page
+// Enhanced Walmart-style Adaptive Shopping Page
 const AdaptiveShoppingPage = () => {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Adaptive Shopping Experience</h1>
-            <p className="text-gray-600 mt-2">Configure your personalized shopping interface</p>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Link to="/dashboard" className="text-blue-600 hover:text-blue-800">Dashboard</Link>
-            <Link to="/" className="text-blue-600 hover:text-blue-800">Home</Link>
+    <div className="min-h-screen bg-gray-50">
+      <NavigationBar currentPage="adaptive" />
+
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-walmart-blue to-blue-700 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold mb-4">Adaptive Shopping Experience</h1>
+            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+              AI-powered accessibility features that adapt to your unique needs, making shopping easier and more comfortable for everyone
+            </p>
           </div>
         </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Adaptive Shopping Panel */}
         <AdaptiveShoppingPanel />
 
-        {/* Information Section */}
-        <div className="mt-8 bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">How Adaptive Shopping Works</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="text-3xl mb-3">🎯</div>
-              <h3 className="font-semibold text-gray-900 mb-2">Real-Time Detection</h3>
-              <p className="text-sm text-gray-600">
-                Our AI monitors your interaction patterns to detect stress, confusion, or frustration
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-3">⚡</div>
-              <h3 className="font-semibold text-gray-900 mb-2">Instant Adaptation</h3>
-              <p className="text-sm text-gray-600">
-                The interface automatically adjusts layout, colors, and complexity based on your needs
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-3">🧠</div>
-              <h3 className="font-semibold text-gray-900 mb-2">Neurodiversity Support</h3>
-              <p className="text-sm text-gray-600">
-                Specialized support for ADHD, autism, dyslexia, and other cognitive differences
-              </p>
+        {/* Enhanced Information Section */}
+        <div className="mt-8 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+          <div className="bg-gradient-to-r from-walmart-blue to-blue-600 text-white p-6">
+            <h2 className="text-2xl font-semibold mb-2">How Adaptive Shopping Works</h2>
+            <p className="text-blue-100">Powered by advanced AI and designed with accessibility experts</p>
+          </div>
+          <div className="p-6">
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="bg-walmart-blue bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-3xl">🎯</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-3">Real-Time Detection</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Our AI continuously monitors your interaction patterns to detect stress, confusion, or frustration,
+                  ensuring a smooth shopping experience
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-walmart-blue bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-3xl">⚡</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-3">Instant Adaptation</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  The interface automatically adjusts layout, colors, text size, and complexity
+                  based on your preferences and current needs
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-walmart-blue bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-3xl">🧠</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-3">Neurodiversity Support</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Specialized support for ADHD, autism, dyslexia, anxiety, and other cognitive differences
+                  with evidence-based accommodations
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Privacy Notice */}
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-start">
-            <div className="text-blue-600 text-xl mr-3">🔒</div>
-            <div>
-              <h4 className="font-semibold text-blue-900">Privacy & Data</h4>
-              <p className="text-sm text-blue-700 mt-1">
-                All behavioral data is processed locally in your browser. No personal interaction data is sent to our servers.
-                Your privacy and autonomy are our top priorities.
-              </p>
-            </div>
+        {/* Features Grid */}
+        <div className="mt-8 grid md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <span className="text-2xl mr-3">🌟</span>
+              Key Features
+            </h3>
+            <ul className="space-y-3 text-sm text-gray-600">
+              <li className="flex items-center">
+                <span className="w-2 h-2 bg-walmart-blue rounded-full mr-3"></span>
+                Voice-controlled shopping and navigation
+              </li>
+              <li className="flex items-center">
+                <span className="w-2 h-2 bg-walmart-blue rounded-full mr-3"></span>
+                Customizable visual and sensory settings
+              </li>
+              <li className="flex items-center">
+                <span className="w-2 h-2 bg-walmart-blue rounded-full mr-3"></span>
+                Cognitive load reduction and simplification
+              </li>
+              <li className="flex items-center">
+                <span className="w-2 h-2 bg-walmart-blue rounded-full mr-3"></span>
+                Real-time stress monitoring and response
+              </li>
+              <li className="flex items-center">
+                <span className="w-2 h-2 bg-walmart-blue rounded-full mr-3"></span>
+                WCAG 2.1 AA compliance and beyond
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <span className="text-2xl mr-3">🏆</span>
+              Awards & Recognition
+            </h3>
+            <ul className="space-y-3 text-sm text-gray-600">
+              <li className="flex items-center">
+                <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                Accessibility Excellence Award 2024
+              </li>
+              <li className="flex items-center">
+                <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                Neurodiversity Innovation Recognition
+              </li>
+              <li className="flex items-center">
+                <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                WCAG 2.1 AAA Certified Components
+              </li>
+              <li className="flex items-center">
+                <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                User Experience Excellence
+              </li>
+              <li className="flex items-center">
+                <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                Inclusive Design Leadership
+              </li>
+            </ul>
           </div>
         </div>
       </div>

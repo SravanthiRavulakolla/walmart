@@ -1,5 +1,6 @@
 const express = require('express');
 const { protect } = require('../middleware/auth');
+const Product = require('../models/Product');
 
 const router = express.Router();
 
@@ -8,36 +9,36 @@ const generateShoppingList = async (prompt) => {
   // This is a mock implementation - replace with actual OpenAI API call
   const mockResponses = {
     'goa trip': {
-      categories: ['Travel Essentials', 'Clothing', 'Health & Safety', 'Entertainment'],
+      categories: ['Travel Essentials', 'Clothing', 'Health & Safety', 'Electronics'],
       items: [
-        { name: 'Sunscreen SPF 50+', category: 'Health & Safety', price: 12.99, quantity: 1 },
-        { name: 'Beach Towel', category: 'Travel Essentials', price: 19.99, quantity: 2 },
-        { name: 'Flip Flops', category: 'Clothing', price: 15.99, quantity: 1 },
-        { name: 'Waterproof Phone Case', category: 'Travel Essentials', price: 9.99, quantity: 1 },
-        { name: 'Portable Charger', category: 'Electronics', price: 24.99, quantity: 1 },
-        { name: 'First Aid Kit', category: 'Health & Safety', price: 16.99, quantity: 1 }
+        { name: 'Neutrogena Ultra Sheer Dry-Touch Sunscreen SPF 100+', category: 'Health & Safety', price: 12.99, quantity: 1, sku: 'NEUTRO-SUN-100-3OZ' },
+        { name: 'Dock & Bay Quick Dry Beach Towel', category: 'Travel Essentials', price: 19.99, quantity: 2, sku: 'DOCK-TOWEL-LG-BLUE' },
+        { name: 'Havaianas Brazil Flip Flops', category: 'Clothing', price: 15.99, quantity: 1, sku: 'HAVA-BRAZIL-M9-NAVY' },
+        { name: 'JOTO Waterproof Phone Case', category: 'Travel Essentials', price: 9.99, quantity: 1, sku: 'JOTO-WP-CASE-CLEAR' },
+        { name: 'Anker PowerCore 10000 Portable Charger', category: 'Electronics', price: 24.99, quantity: 1, sku: 'ANKER-PC10K-BLACK' },
+        { name: 'Johnson & Johnson First Aid Kit', category: 'Health & Safety', price: 16.99, quantity: 1, sku: 'JJ-FIRSTAID-140PC' }
       ]
     },
     'birthday party': {
-      categories: ['Decorations', 'Food & Drinks', 'Entertainment', 'Tableware'],
+      categories: ['Decorations', 'Food & Drinks', 'Tableware'],
       items: [
-        { name: 'Birthday Balloons Pack', category: 'Decorations', price: 8.99, quantity: 1 },
-        { name: 'Paper Plates (50 pack)', category: 'Tableware', price: 6.99, quantity: 1 },
-        { name: 'Plastic Cups (50 pack)', category: 'Tableware', price: 5.99, quantity: 1 },
-        { name: 'Birthday Candles', category: 'Decorations', price: 3.99, quantity: 1 },
-        { name: 'Party Hats', category: 'Decorations', price: 7.99, quantity: 1 },
-        { name: 'Soda Variety Pack', category: 'Food & Drinks', price: 12.99, quantity: 2 }
+        { name: 'Amscan Happy Birthday Balloons Pack', category: 'Decorations', price: 8.99, quantity: 1, sku: 'AMSCAN-BDAY-BALLOONS-20' },
+        { name: 'Hefty Disposable Paper Plates 50 Count', category: 'Tableware', price: 6.99, quantity: 1, sku: 'HEFTY-PLATES-50CT-9IN' },
+        { name: 'Solo Red Plastic Cups 50 Count', category: 'Tableware', price: 5.99, quantity: 1, sku: 'SOLO-RED-CUPS-50CT-16OZ' },
+        { name: 'Creative Converting Birthday Candles', category: 'Decorations', price: 3.99, quantity: 1, sku: 'CC-BDAY-CANDLES-24CT' },
+        { name: 'Beistle Party Hats Assorted Colors', category: 'Decorations', price: 7.99, quantity: 1, sku: 'BEISTLE-HATS-8CT-ASST' },
+        { name: 'Coca-Cola Soda Variety Pack 12 Cans', category: 'Food & Drinks', price: 12.99, quantity: 2, sku: 'COKE-VARIETY-12CT-12OZ' }
       ]
     },
     'camping': {
       categories: ['Camping Gear', 'Food & Cooking', 'Safety', 'Clothing'],
       items: [
-        { name: 'Camping Tent (4-person)', category: 'Camping Gear', price: 89.99, quantity: 1 },
-        { name: 'Sleeping Bag', category: 'Camping Gear', price: 34.99, quantity: 2 },
-        { name: 'Portable Camping Stove', category: 'Food & Cooking', price: 45.99, quantity: 1 },
-        { name: 'Flashlight', category: 'Safety', price: 12.99, quantity: 2 },
-        { name: 'Insect Repellent', category: 'Safety', price: 8.99, quantity: 1 },
-        { name: 'Camping Chairs', category: 'Camping Gear', price: 29.99, quantity: 2 }
+        { name: 'Coleman Sundome 4-Person Tent', category: 'Camping Gear', price: 89.99, quantity: 1, sku: 'COLEMAN-SUNDOME-4P' },
+        { name: 'TETON Sports Celsius Sleeping Bag', category: 'Camping Gear', price: 34.99, quantity: 2, sku: 'TETON-CELSIUS-REG' },
+        { name: 'Coleman Portable Camping Stove', category: 'Food & Cooking', price: 45.99, quantity: 1, sku: 'COLEMAN-STOVE-2BURN' },
+        { name: 'Energizer LED Flashlight', category: 'Safety', price: 12.99, quantity: 2, sku: 'ENERGIZER-LED-FLASH' },
+        { name: 'OFF! Deep Woods Insect Repellent', category: 'Safety', price: 8.99, quantity: 1, sku: 'OFF-DEEPWOODS-6OZ' },
+        { name: 'Coleman Portable Camping Chairs', category: 'Camping Gear', price: 29.99, quantity: 2, sku: 'COLEMAN-CHAIR-QUAD' }
       ]
     }
   };
@@ -64,6 +65,72 @@ const generateShoppingList = async (prompt) => {
   }
 };
 
+// Function to find actual products from database that match the suggestions
+const findMatchingProducts = async (suggestedItems) => {
+  const matchedProducts = [];
+
+  for (const item of suggestedItems) {
+    try {
+      // Try to find exact match by SKU first
+      let product = null;
+      if (item.sku) {
+        product = await Product.findOne({ sku: item.sku, isActive: true });
+      }
+
+      // If no SKU match, try name matching
+      if (!product) {
+        product = await Product.findOne({
+          name: { $regex: new RegExp(item.name, 'i') },
+          isActive: true
+        });
+      }
+
+      // If still no match, try tag matching
+      if (!product) {
+        const keywords = item.name.toLowerCase().split(' ');
+        product = await Product.findOne({
+          tags: { $in: keywords },
+          isActive: true
+        });
+      }
+
+      if (product) {
+        matchedProducts.push({
+          ...item,
+          productId: product._id,
+          actualPrice: product.price,
+          originalPrice: product.originalPrice,
+          discount: product.discount,
+          image: product.images[0]?.url,
+          inStock: product.stock > 0,
+          stock: product.stock
+        });
+      } else {
+        // Keep the suggested item even if no product match
+        matchedProducts.push({
+          ...item,
+          productId: null,
+          actualPrice: item.price,
+          inStock: false,
+          stock: 0
+        });
+      }
+    } catch (error) {
+      console.error('Error finding product:', error);
+      // Keep the suggested item on error
+      matchedProducts.push({
+        ...item,
+        productId: null,
+        actualPrice: item.price,
+        inStock: false,
+        stock: 0
+      });
+    }
+  }
+
+  return matchedProducts;
+};
+
 // @desc    Generate shopping list from prompt
 // @route   POST /api/preppal/generate
 // @access  Private
@@ -88,19 +155,22 @@ router.post('/generate', protect, async (req, res) => {
     // Generate shopping list using AI (mock implementation)
     const shoppingList = await generateShoppingList(prompt);
 
-    // Calculate total estimated cost
-    const totalCost = shoppingList.items.reduce((sum, item) => 
-      sum + (item.price * item.quantity), 0
+    // Find matching products in database
+    const matchedItems = await findMatchingProducts(shoppingList.items);
+
+    // Calculate total estimated cost using actual prices
+    const totalCost = matchedItems.reduce((sum, item) =>
+      sum + (item.actualPrice * item.quantity), 0
     );
 
     // Apply user preferences if provided
-    let filteredItems = shoppingList.items;
+    let filteredItems = matchedItems;
     if (preferences) {
       if (preferences.maxBudget) {
         // Filter items to fit budget (simplified logic)
         let currentTotal = 0;
-        filteredItems = shoppingList.items.filter(item => {
-          const itemCost = item.price * item.quantity;
+        filteredItems = matchedItems.filter(item => {
+          const itemCost = item.actualPrice * item.quantity;
           if (currentTotal + itemCost <= preferences.maxBudget) {
             currentTotal += itemCost;
             return true;
@@ -110,7 +180,7 @@ router.post('/generate', protect, async (req, res) => {
       }
 
       if (preferences.excludeCategories && preferences.excludeCategories.length > 0) {
-        filteredItems = filteredItems.filter(item => 
+        filteredItems = filteredItems.filter(item =>
           !preferences.excludeCategories.includes(item.category)
         );
       }
@@ -124,8 +194,10 @@ router.post('/generate', protect, async (req, res) => {
         items: filteredItems,
         summary: {
           totalItems: filteredItems.length,
-          estimatedCost: Math.round(filteredItems.reduce((sum, item) => 
-            sum + (item.price * item.quantity), 0) * 100) / 100,
+          estimatedCost: Math.round(filteredItems.reduce((sum, item) =>
+            sum + (item.actualPrice * item.quantity), 0) * 100) / 100,
+          availableItems: filteredItems.filter(item => item.inStock).length,
+          unavailableItems: filteredItems.filter(item => !item.inStock).length,
           categories: filteredItems.reduce((acc, item) => {
             acc[item.category] = (acc[item.category] || 0) + 1;
             return acc;
