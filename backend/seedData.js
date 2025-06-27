@@ -567,6 +567,543 @@ const sampleProducts = [
     isActive: true,
     isFeatured: false
   },
+
+  // Additional Birthday Party Products
+  {
+    name: 'Great Value Birthday Cake Mix',
+    description: 'Moist and delicious vanilla cake mix perfect for birthday celebrations. Just add water, oil, and eggs. Makes one 9-inch round cake.',
+    shortDescription: 'Vanilla birthday cake mix',
+    price: 1.98,
+    originalPrice: 2.48,
+    discount: 20,
+    category: 'Food & Grocery',
+    subcategory: 'Baking',
+    brand: 'Great Value',
+    model: 'Vanilla Cake Mix',
+    sku: 'GV-CAKE-MIX-VANILLA',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/cake_mix_sample.jpg',
+        alt: 'Great Value Vanilla Cake Mix',
+        isPrimary: true
+      }
+    ],
+    stock: 200,
+    specifications: [
+      { name: 'Weight', value: '15.25 oz' },
+      { name: 'Flavor', value: 'Vanilla' },
+      { name: 'Serves', value: '8-10 people' },
+      { name: 'Prep Time', value: '5 minutes' }
+    ],
+    accessibilityFeatures: ['Large Print', 'Easy Grip'],
+    tags: ['cake mix', 'birthday', 'baking', 'party', 'vanilla', 'great value'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'Duncan Hines Vanilla Frosting',
+    description: 'Rich and creamy vanilla frosting perfect for decorating birthday cakes and cupcakes. Ready to use straight from the container.',
+    shortDescription: 'Ready-to-use vanilla frosting',
+    price: 2.48,
+    originalPrice: 2.98,
+    discount: 17,
+    category: 'Food & Grocery',
+    subcategory: 'Baking',
+    brand: 'Duncan Hines',
+    model: 'Vanilla Frosting',
+    sku: 'DH-FROSTING-VANILLA',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/frosting_sample.jpg',
+        alt: 'Duncan Hines Vanilla Frosting',
+        isPrimary: true
+      }
+    ],
+    stock: 150,
+    specifications: [
+      { name: 'Weight', value: '16 oz' },
+      { name: 'Flavor', value: 'Vanilla' },
+      { name: 'Type', value: 'Ready-to-use' },
+      { name: 'Coverage', value: '24 cupcakes or 1 cake' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['frosting', 'birthday', 'baking', 'party', 'vanilla', 'duncan hines'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'Great Value Chocolate Ice Cream',
+    description: 'Rich and creamy chocolate ice cream made with real cocoa. Perfect for birthday parties and celebrations. Family size container.',
+    shortDescription: 'Chocolate ice cream family size',
+    price: 3.98,
+    originalPrice: 4.48,
+    discount: 11,
+    category: 'Food & Grocery',
+    subcategory: 'Frozen Foods',
+    brand: 'Great Value',
+    model: 'Chocolate Ice Cream',
+    sku: 'GV-ICE-CREAM-CHOC',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/ice_cream_sample.jpg',
+        alt: 'Great Value Chocolate Ice Cream',
+        isPrimary: true
+      }
+    ],
+    stock: 100,
+    specifications: [
+      { name: 'Size', value: '1.5 quarts' },
+      { name: 'Flavor', value: 'Chocolate' },
+      { name: 'Serves', value: '12 servings' },
+      { name: 'Storage', value: 'Keep frozen' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['ice cream', 'birthday', 'party', 'chocolate', 'frozen', 'great value'],
+    isActive: true,
+    isFeatured: false
+  },
+
+  // Additional Travel/Beach Products
+  {
+    name: 'Coppertone Sport Sunscreen Lotion SPF 50',
+    description: 'Water-resistant sport sunscreen that stays on strong when you sweat. Broad spectrum UVA/UVB protection for active beach days.',
+    shortDescription: 'Water-resistant sport sunscreen SPF 50',
+    price: 8.97,
+    originalPrice: 10.97,
+    discount: 18,
+    category: 'Health & Beauty',
+    subcategory: 'Sun Care',
+    brand: 'Coppertone',
+    model: 'Sport SPF 50',
+    sku: 'COPPER-SPORT-SPF50',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/coppertone_sample.jpg',
+        alt: 'Coppertone Sport Sunscreen SPF 50',
+        isPrimary: true
+      }
+    ],
+    stock: 120,
+    specifications: [
+      { name: 'SPF', value: '50' },
+      { name: 'Size', value: '7 fl oz' },
+      { name: 'Water Resistant', value: '80 minutes' },
+      { name: 'Type', value: 'Sport formula' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['sunscreen', 'beach', 'travel', 'sport', 'water resistant', 'goa'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'Igloo Playmate Cooler 16 Qt',
+    description: 'Classic Playmate cooler perfect for beach trips and picnics. Holds up to 20 cans plus ice. Durable and easy to carry.',
+    shortDescription: '16-quart portable cooler',
+    price: 24.88,
+    originalPrice: 29.88,
+    discount: 17,
+    category: 'Sports & Outdoors',
+    subcategory: 'Coolers',
+    brand: 'Igloo',
+    model: 'Playmate 16 Qt',
+    sku: 'IGLOO-PLAYMATE-16QT',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/cooler_sample.jpg',
+        alt: 'Igloo Playmate Cooler 16 Qt',
+        isPrimary: true
+      }
+    ],
+    stock: 75,
+    specifications: [
+      { name: 'Capacity', value: '16 quarts' },
+      { name: 'Can Capacity', value: '20 cans + ice' },
+      { name: 'Weight', value: '3.5 lbs' },
+      { name: 'Dimensions', value: '18.5" x 12.9" x 13.8"' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['cooler', 'beach', 'travel', 'picnic', 'igloo', 'goa'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'Banana Boat Aloe After Sun Lotion',
+    description: 'Soothing aloe vera after-sun lotion that helps cool and moisturize sun-exposed skin. Perfect for beach vacations.',
+    shortDescription: 'Aloe after-sun moisturizing lotion',
+    price: 4.97,
+    originalPrice: 5.97,
+    discount: 17,
+    category: 'Health & Beauty',
+    subcategory: 'Sun Care',
+    brand: 'Banana Boat',
+    model: 'Aloe After Sun',
+    sku: 'BB-ALOE-AFTERSUN',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/after_sun_sample.jpg',
+        alt: 'Banana Boat Aloe After Sun Lotion',
+        isPrimary: true
+      }
+    ],
+    stock: 90,
+    specifications: [
+      { name: 'Size', value: '16 fl oz' },
+      { name: 'Key Ingredient', value: 'Aloe Vera' },
+      { name: 'Type', value: 'After-sun care' },
+      { name: 'Skin Type', value: 'All skin types' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['after sun', 'aloe', 'beach', 'travel', 'moisturizer', 'goa'],
+    isActive: true,
+    isFeatured: false
+  },
+
+  // Additional Camping Products
+  {
+    name: 'Coleman Lantern Battery Powered',
+    description: 'Bright LED lantern with 360-degree light. Runs on 4 D batteries (not included). Perfect for camping and emergency use.',
+    shortDescription: 'Battery-powered LED camping lantern',
+    price: 19.97,
+    originalPrice: 24.97,
+    discount: 20,
+    category: 'Sports & Outdoors',
+    subcategory: 'Lighting',
+    brand: 'Coleman',
+    model: 'LED Lantern',
+    sku: 'COLEMAN-LANTERN-LED',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/lantern_sample.jpg',
+        alt: 'Coleman LED Lantern',
+        isPrimary: true
+      }
+    ],
+    stock: 85,
+    specifications: [
+      { name: 'Light Output', value: '1000 lumens' },
+      { name: 'Battery Type', value: '4 D batteries' },
+      { name: 'Runtime', value: '175 hours' },
+      { name: 'Light Pattern', value: '360-degree' }
+    ],
+    accessibilityFeatures: ['Simple Interface', 'Easy Grip'],
+    tags: ['lantern', 'camping', 'led', 'battery', 'coleman', 'outdoor'],
+    isActive: true,
+    isFeatured: false
+  },
+
+  // General Household & Grocery Items
+  {
+    name: 'Great Value 2% Reduced Fat Milk',
+    description: 'Fresh and nutritious 2% reduced fat milk. Perfect for drinking, cereal, and cooking. Gallon size for families.',
+    shortDescription: '2% reduced fat milk gallon',
+    price: 3.68,
+    originalPrice: 3.98,
+    discount: 8,
+    category: 'Food & Grocery',
+    subcategory: 'Dairy',
+    brand: 'Great Value',
+    model: '2% Milk Gallon',
+    sku: 'GV-MILK-2PERCENT-GAL',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/milk_sample.jpg',
+        alt: 'Great Value 2% Milk Gallon',
+        isPrimary: true
+      }
+    ],
+    stock: 300,
+    specifications: [
+      { name: 'Size', value: '1 gallon' },
+      { name: 'Fat Content', value: '2%' },
+      { name: 'Type', value: 'Reduced fat' },
+      { name: 'Storage', value: 'Keep refrigerated' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['milk', 'dairy', 'grocery', 'breakfast', 'great value'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'Wonder Bread Classic White',
+    description: 'Soft and fresh classic white bread. Perfect for sandwiches, toast, and everyday meals. 20 oz loaf.',
+    shortDescription: 'Classic white bread loaf',
+    price: 1.28,
+    originalPrice: 1.48,
+    discount: 14,
+    category: 'Food & Grocery',
+    subcategory: 'Bakery',
+    brand: 'Wonder',
+    model: 'Classic White',
+    sku: 'WONDER-BREAD-WHITE',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/bread_sample.jpg',
+        alt: 'Wonder Bread Classic White',
+        isPrimary: true
+      }
+    ],
+    stock: 250,
+    specifications: [
+      { name: 'Weight', value: '20 oz' },
+      { name: 'Slices', value: '22 slices' },
+      { name: 'Type', value: 'White bread' },
+      { name: 'Enriched', value: 'Yes' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['bread', 'white bread', 'sandwich', 'grocery', 'wonder'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'Bananas Fresh Produce',
+    description: 'Fresh, ripe bananas perfect for snacking, smoothies, and baking. Rich in potassium and natural energy.',
+    shortDescription: 'Fresh bananas per pound',
+    price: 0.58,
+    originalPrice: 0.68,
+    discount: 15,
+    category: 'Food & Grocery',
+    subcategory: 'Fresh Produce',
+    brand: 'Fresh',
+    model: 'Bananas',
+    sku: 'FRESH-BANANAS-LB',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/bananas_sample.jpg',
+        alt: 'Fresh Bananas',
+        isPrimary: true
+      }
+    ],
+    stock: 500,
+    specifications: [
+      { name: 'Unit', value: 'Per pound' },
+      { name: 'Type', value: 'Fresh produce' },
+      { name: 'Origin', value: 'Various' },
+      { name: 'Storage', value: 'Room temperature' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['bananas', 'fruit', 'fresh', 'produce', 'healthy', 'snack'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'Great Value Large Eggs',
+    description: 'Fresh Grade A large eggs. Perfect for breakfast, baking, and cooking. Dozen pack with excellent protein content.',
+    shortDescription: 'Grade A large eggs dozen',
+    price: 2.12,
+    originalPrice: 2.42,
+    discount: 12,
+    category: 'Food & Grocery',
+    subcategory: 'Dairy',
+    brand: 'Great Value',
+    model: 'Large Eggs',
+    sku: 'GV-EGGS-LARGE-DOZEN',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/eggs_sample.jpg',
+        alt: 'Great Value Large Eggs',
+        isPrimary: true
+      }
+    ],
+    stock: 200,
+    specifications: [
+      { name: 'Count', value: '12 eggs' },
+      { name: 'Grade', value: 'Grade A' },
+      { name: 'Size', value: 'Large' },
+      { name: 'Storage', value: 'Keep refrigerated' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['eggs', 'protein', 'breakfast', 'baking', 'grocery', 'great value'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'Charmin Ultra Soft Toilet Paper',
+    description: 'Ultra soft toilet paper that\'s gentle and absorbent. 12 mega rolls equal 48 regular rolls. Long-lasting family pack.',
+    shortDescription: 'Ultra soft toilet paper 12 mega rolls',
+    price: 12.97,
+    originalPrice: 14.97,
+    discount: 13,
+    category: 'Health & Beauty',
+    subcategory: 'Personal Care',
+    brand: 'Charmin',
+    model: 'Ultra Soft',
+    sku: 'CHARMIN-ULTRA-SOFT-12',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/toilet_paper_sample.jpg',
+        alt: 'Charmin Ultra Soft Toilet Paper',
+        isPrimary: true
+      }
+    ],
+    stock: 150,
+    specifications: [
+      { name: 'Count', value: '12 mega rolls' },
+      { name: 'Equivalent', value: '48 regular rolls' },
+      { name: 'Ply', value: '2-ply' },
+      { name: 'Type', value: 'Ultra soft' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['toilet paper', 'bathroom', 'household', 'charmin', 'soft'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'Tide Liquid Laundry Detergent',
+    description: 'America\'s #1 detergent. Powerful cleaning for all your laundry needs. Original scent, 64 loads capacity.',
+    shortDescription: 'Liquid laundry detergent 92 fl oz',
+    price: 11.97,
+    originalPrice: 13.97,
+    discount: 14,
+    category: 'Home & Garden',
+    subcategory: 'Laundry',
+    brand: 'Tide',
+    model: 'Original Scent',
+    sku: 'TIDE-LIQUID-ORIGINAL-92',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/tide_sample.jpg',
+        alt: 'Tide Liquid Laundry Detergent',
+        isPrimary: true
+      }
+    ],
+    stock: 120,
+    specifications: [
+      { name: 'Size', value: '92 fl oz' },
+      { name: 'Loads', value: '64 loads' },
+      { name: 'Scent', value: 'Original' },
+      { name: 'Type', value: 'Liquid concentrate' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['laundry', 'detergent', 'cleaning', 'household', 'tide'],
+    isActive: true,
+    isFeatured: false
+  },
+
+  // Additional Party/Snack Items
+  {
+    name: 'Lay\'s Classic Potato Chips',
+    description: 'America\'s favorite potato chips with the perfect amount of salt. Great for parties, snacking, and gatherings.',
+    shortDescription: 'Classic potato chips family size',
+    price: 3.98,
+    originalPrice: 4.48,
+    discount: 11,
+    category: 'Food & Grocery',
+    subcategory: 'Snacks',
+    brand: 'Lay\'s',
+    model: 'Classic',
+    sku: 'LAYS-CLASSIC-CHIPS',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/chips_sample.jpg',
+        alt: 'Lay\'s Classic Potato Chips',
+        isPrimary: true
+      }
+    ],
+    stock: 200,
+    specifications: [
+      { name: 'Size', value: 'Family size' },
+      { name: 'Weight', value: '10 oz' },
+      { name: 'Flavor', value: 'Classic' },
+      { name: 'Type', value: 'Potato chips' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['chips', 'snacks', 'party', 'potato chips', 'lays'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'Tostitos Chunky Salsa',
+    description: 'Thick and chunky salsa made with vine-ripened tomatoes, onions, and peppers. Perfect for dipping with chips.',
+    shortDescription: 'Chunky salsa dip',
+    price: 2.98,
+    originalPrice: 3.48,
+    discount: 14,
+    category: 'Food & Grocery',
+    subcategory: 'Condiments',
+    brand: 'Tostitos',
+    model: 'Chunky Salsa',
+    sku: 'TOSTITOS-SALSA-CHUNKY',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/salsa_sample.jpg',
+        alt: 'Tostitos Chunky Salsa',
+        isPrimary: true
+      }
+    ],
+    stock: 150,
+    specifications: [
+      { name: 'Size', value: '15.5 oz' },
+      { name: 'Type', value: 'Chunky' },
+      { name: 'Heat Level', value: 'Medium' },
+      { name: 'Storage', value: 'Refrigerate after opening' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['salsa', 'dip', 'party', 'snacks', 'tostitos'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'DiGiorno Rising Crust Pizza',
+    description: 'Frozen pizza with rising crust, premium cheese, and pepperoni. Perfect for parties and quick meals.',
+    shortDescription: 'Frozen pepperoni pizza',
+    price: 5.98,
+    originalPrice: 6.98,
+    discount: 14,
+    category: 'Food & Grocery',
+    subcategory: 'Frozen Foods',
+    brand: 'DiGiorno',
+    model: 'Rising Crust Pepperoni',
+    sku: 'DIGIORNO-PIZZA-PEPPERONI',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/pizza_sample.jpg',
+        alt: 'DiGiorno Rising Crust Pizza',
+        isPrimary: true
+      }
+    ],
+    stock: 100,
+    specifications: [
+      { name: 'Size', value: '12 inch' },
+      { name: 'Crust', value: 'Rising crust' },
+      { name: 'Toppings', value: 'Pepperoni' },
+      { name: 'Serves', value: '3-4 people' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['pizza', 'frozen', 'party', 'pepperoni', 'digiorno'],
+    isActive: true,
+    isFeatured: false
+  },
+  {
+    name: 'Great Value Paper Napkins',
+    description: 'Soft and absorbent paper napkins perfect for parties, meals, and everyday use. 200 count pack.',
+    shortDescription: 'Paper napkins 200 count',
+    price: 1.98,
+    originalPrice: 2.48,
+    discount: 20,
+    category: 'Home & Garden',
+    subcategory: 'Paper Products',
+    brand: 'Great Value',
+    model: 'Paper Napkins',
+    sku: 'GV-NAPKINS-200CT',
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dbk7zq6al/image/upload/v1640995200/napkins_sample.jpg',
+        alt: 'Great Value Paper Napkins',
+        isPrimary: true
+      }
+    ],
+    stock: 300,
+    specifications: [
+      { name: 'Count', value: '200 napkins' },
+      { name: 'Ply', value: '1-ply' },
+      { name: 'Color', value: 'White' },
+      { name: 'Size', value: 'Standard' }
+    ],
+    accessibilityFeatures: ['Easy Grip'],
+    tags: ['napkins', 'paper', 'party', 'household', 'great value'],
+    isActive: true,
+    isFeatured: false
+  },
   {
     name: 'Sony WH-1000XM5 Headphones',
     description: 'Industry-leading noise canceling headphones with exceptional sound quality. Features speak-to-chat technology and adaptive sound control for users with sensory sensitivities.',

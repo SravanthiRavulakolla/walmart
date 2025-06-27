@@ -7,10 +7,11 @@ import VoiceAssistant from './components/voice/VoiceAssistant';
 import VoiceTestPage from './components/voice/VoiceTestPage';
 import CartPage from './components/CartPage';
 import useAdaptiveBehavior from './hooks/useAdaptiveBehavior';
+import { ShoppingCart } from 'lucide-react';
 
 // Walmart-style Navigation Bar Component
 const NavigationBar = ({ currentPage = "" }) => {
-  const { logout, cart } = useAuth();
+  const { logout, cart, isAuthenticated } = useAuth();
 
   return (
     <nav className="bg-walmart-blue shadow-lg sticky top-0 z-50">
@@ -29,58 +30,77 @@ const NavigationBar = ({ currentPage = "" }) => {
 
           {/* Navigation Links */}
           <div className="flex items-center space-x-1">
-            <Link
-              to="/"
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                currentPage === 'home'
-                  ? 'bg-white bg-opacity-20 text-white'
-                  : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
-              }`}
-            >
-              Home
-            </Link>
-            <Link
-              to="/preppal"
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                currentPage === 'preppal'
-                  ? 'bg-white bg-opacity-20 text-white'
-                  : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
-              }`}
-            >
-              PrepPal
-            </Link>
-            <Link
-              to="/adaptive"
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                currentPage === 'adaptive'
-                  ? 'bg-white bg-opacity-20 text-white'
-                  : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
-              }`}
-            >
-              Adaptive Shopping
-            </Link>
-            <Link
-              to="/cart"
-              className={`relative px-4 py-2 rounded-lg font-medium flex items-center space-x-2 transition-all ${
-                currentPage === 'cart'
-                  ? 'bg-white bg-opacity-20 text-white'
-                  : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
-              }`}
-            >
-              <span className="text-lg">🛒</span>
-              <span>Cart</span>
-              {cart.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-walmart-yellow text-walmart-blue text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  {cart.length}
-                </span>
-              )}
-            </Link>
-            <button
-              onClick={logout}
-              className="bg-walmart-yellow text-walmart-blue px-4 py-2 rounded-lg hover:bg-yellow-400 font-medium transition-colors ml-4"
-            >
-              Logout
-            </button>
+            {isAuthenticated ? (
+              <>
+                <Link
+                  to="/"
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    currentPage === 'home'
+                      ? 'bg-white bg-opacity-20 text-white'
+                      : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
+                  }`}
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/preppal"
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    currentPage === 'preppal'
+                      ? 'bg-white bg-opacity-20 text-white'
+                      : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
+                  }`}
+                >
+                  PrepPal
+                </Link>
+                <Link
+                  to="/adaptive"
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    currentPage === 'adaptive'
+                      ? 'bg-white bg-opacity-20 text-white'
+                      : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
+                  }`}
+                >
+                  Adaptive Shopping
+                </Link>
+                <Link
+                  to="/cart"
+                  className={`relative px-4 py-2 rounded-lg font-medium flex items-center space-x-2 transition-all ${
+                    currentPage === 'cart'
+                      ? 'bg-white bg-opacity-20 text-white'
+                      : 'text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-white'
+                  }`}
+                >
+                  <span className="text-lg">🛒</span>
+                  <span>Cart</span>
+                  {cart.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-walmart-yellow text-walmart-blue text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                      {cart.length}
+                    </span>
+                  )}
+                </Link>
+                <button
+                  onClick={logout}
+                  className="bg-walmart-yellow text-walmart-blue px-4 py-2 rounded-lg hover:bg-yellow-400 font-medium transition-colors ml-4"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-white hover:bg-opacity-30 font-medium transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="bg-walmart-yellow text-walmart-blue px-4 py-2 rounded-lg hover:bg-yellow-400 font-medium transition-colors ml-2"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -331,6 +351,7 @@ const PrepPalPage = () => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
+  const [addedItems, setAddedItems] = useState(new Set());
   const [conversation, setConversation] = useState([
     {
       type: 'assistant',
@@ -407,6 +428,36 @@ const PrepPalPage = () => {
     }, 2000);
   };
 
+  const handleAddToCart = (item, index) => {
+    const cartItem = {
+      name: item.name,
+      category: item.category,
+      price: 9.99 // Default price since this is a mock
+    };
+    console.log('Adding item to cart:', cartItem);
+    addToCart(cartItem);
+    setAddedItems(prev => new Set([...prev, index]));
+  };
+
+  const addAllToCart = () => {
+    let successCount = 0;
+    shoppingList.forEach((item, index) => {
+      if (!addedItems.has(index)) {
+        handleAddToCart(item, index);
+        successCount++;
+      }
+    });
+
+    if (successCount > 0) {
+      // Show success feedback
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+      toast.textContent = `✓ Added ${successCount} items to cart!`;
+      document.body.appendChild(toast);
+      setTimeout(() => document.body.removeChild(toast), 3000);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
       <NavigationBar currentPage="preppal" />
@@ -476,31 +527,37 @@ const PrepPalPage = () => {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Your Shopping List</h2>
               <button
-                onClick={() => alert('Shopping list saved!')}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm"
+                onClick={addAllToCart}
+                className="bg-walmart-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm font-medium flex items-center"
               >
-                Save List
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Add All to Cart
               </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {shoppingList.map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <span className="font-medium text-gray-900">{item.name}</span>
-                    <span className="text-sm text-gray-500 block">{item.category}</span>
+              {shoppingList.map((item, index) => {
+                const isAdded = addedItems.has(index);
+                return (
+                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <span className="font-medium text-gray-900">{item.name}</span>
+                      <span className="text-sm text-gray-500 block">{item.category}</span>
+                    </div>
+                    <button
+                      onClick={() => handleAddToCart(item, index)}
+                      disabled={isAdded}
+                      className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                        isAdded
+                          ? 'bg-green-500 text-white cursor-default'
+                          : 'bg-walmart-blue text-white hover:bg-blue-700'
+                      }`}
+                    >
+                      {isAdded ? 'Added to Cart' : 'Add to Cart'}
+                    </button>
                   </div>
-                  <button
-                    onClick={() => {
-                      addToCart(item);
-                      alert(`Added ${item.name} to cart!`);
-                    }}
-                    className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -536,6 +593,7 @@ const PrepPalPage = () => {
 const ProductsPage = () => {
   const { addToCart, logout, cart } = useAuth();
   const { isEnabled: adaptiveEnabled, stressLevel, adaptiveSettings } = useAdaptiveShopping();
+  const [addedItems, setAddedItems] = useState(new Set());
 
   // Enable behavior tracking for this page
   useAdaptiveBehavior();
@@ -609,6 +667,73 @@ const ProductsPage = () => {
       accessibility: "Tactile Stimulation, Focus Enhancement, Quiet Operation, Portable Design",
       inStock: true,
       rating: 4.8
+    },
+    // Birthday Party Items
+    {
+      id: 7,
+      name: "Birthday Party Balloons Set",
+      price: 12.99,
+      category: "Party Supplies",
+      image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=300&h=300&fit=crop",
+      description: "Colorful balloon set with 50 balloons in various colors perfect for birthday celebrations",
+      accessibility: "Bright Colors, Easy to Inflate, Safe Materials, Multiple Sizes",
+      inStock: true,
+      rating: 4.5
+    },
+    {
+      id: 8,
+      name: "Birthday Cake Candles",
+      price: 8.99,
+      category: "Party Supplies",
+      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=300&fit=crop",
+      description: "Set of colorful birthday candles with holders, perfect for any age celebration",
+      accessibility: "Easy to Light, Drip-Free, Bright Colors, Safe Wax",
+      inStock: true,
+      rating: 4.6
+    },
+    {
+      id: 9,
+      name: "Party Hats & Decorations",
+      price: 15.99,
+      category: "Party Supplies",
+      image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=300&h=300&fit=crop",
+      description: "Complete party decoration set with hats, streamers, and banners",
+      accessibility: "Bright Colors, Easy Setup, Reusable Materials, Fun Designs",
+      inStock: true,
+      rating: 4.4
+    },
+    {
+      id: 10,
+      name: "Birthday Cake Mix",
+      price: 6.99,
+      category: "Food",
+      image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=300&fit=crop",
+      description: "Easy-to-make birthday cake mix, just add water and bake",
+      accessibility: "Simple Instructions, Allergen-Free Options, Quick Preparation",
+      inStock: true,
+      rating: 4.7
+    },
+    {
+      id: 11,
+      name: "Party Plates & Cups Set",
+      price: 9.99,
+      category: "Party Supplies",
+      image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=300&h=300&fit=crop",
+      description: "Disposable party plates and cups set for 20 people",
+      accessibility: "Easy Cleanup, Bright Colors, Sturdy Design, Eco-Friendly",
+      inStock: true,
+      rating: 4.3
+    },
+    {
+      id: 12,
+      name: "Birthday Gift Wrapping Kit",
+      price: 11.99,
+      category: "Party Supplies",
+      image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=300&h=300&fit=crop",
+      description: "Complete gift wrapping set with paper, ribbons, and gift tags",
+      accessibility: "Easy to Use, Bright Patterns, Pre-Cut Sizes, Adhesive Strips",
+      inStock: true,
+      rating: 4.5
     }
   ]);
 
@@ -679,13 +804,15 @@ const ProductsPage = () => {
       price: product.price
     });
 
+    // Mark item as added
+    setAddedItems(prev => new Set([...prev, product.id]));
+
     // Accessibility feedback
     if (accessibilityMode === 'audio') {
       const utterance = new SpeechSynthesisUtterance(`Added ${product.name} to cart for $${product.price}`);
       speechSynthesis.speak(utterance);
-    } else {
-      alert(`Added ${product.name} to cart!`);
     }
+    // No popup - just change button state
   };
 
   return (
@@ -917,16 +1044,23 @@ const ProductsPage = () => {
 
                 <button
                   onClick={() => handleAddToCart(product)}
-                  disabled={!product.inStock}
+                  disabled={!product.inStock || addedItems.has(product.id)}
                   className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
-                    product.inStock
-                      ? accessibilityMode === 'high-contrast'
-                        ? 'bg-yellow-400 text-black hover:bg-yellow-300 hover:shadow-lg'
-                        : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg'
-                      : 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                    !product.inStock
+                      ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                      : addedItems.has(product.id)
+                        ? 'bg-green-600 text-white cursor-default'
+                        : accessibilityMode === 'high-contrast'
+                          ? 'bg-yellow-400 text-black hover:bg-yellow-300 hover:shadow-lg'
+                          : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg'
                   } ${accessibilityMode === 'large-text' ? 'text-lg py-4' : ''}`}
                 >
-                  {product.inStock ? '🛒 Add to Cart' : '❌ Out of Stock'}
+                  {!product.inStock
+                    ? '❌ Out of Stock'
+                    : addedItems.has(product.id)
+                      ? '✅ Added to Cart'
+                      : '🛒 Add to Cart'
+                  }
                 </button>
               </div>
             </div>
@@ -1084,7 +1218,7 @@ function App() {
   return (
     <AdaptiveShoppingProvider>
       <Routes>
-        <Route path="/" element={isAuthenticated ? <ProductsPage /> : <Navigate to="/login" replace />} />
+        <Route path="/" element={<ProductsPage />} />
         <Route
           path="/login"
           element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />}
@@ -1095,7 +1229,7 @@ function App() {
         />
         <Route
           path="/preppal"
-          element={isAuthenticated ? <PrepPalPage /> : <Navigate to="/login" replace />}
+          element={<PrepPalPage />}
         />
         <Route
           path="/products"
@@ -1103,11 +1237,11 @@ function App() {
         />
         <Route
           path="/cart"
-          element={isAuthenticated ? <CartPage /> : <Navigate to="/login" replace />}
+          element={<CartPage />}
         />
         <Route
           path="/adaptive"
-          element={isAuthenticated ? <AdaptiveShoppingPage /> : <Navigate to="/login" replace />}
+          element={<AdaptiveShoppingPage />}
         />
         <Route
           path="/voice-test"

@@ -106,13 +106,14 @@ const RegisterPage = () => {
         <div className="max-w-md w-full space-y-8">
           {/* Header */}
           <div className="text-center">
-            <Link to="/" className="inline-flex items-center space-x-2 mb-6">
-              <div className="w-10 h-10 bg-walmart-blue rounded-full flex items-center justify-center">
-                <span className="text-white font-bold">SE</span>
+            <Link to="/" className="inline-flex items-center space-x-3 mb-8">
+              <div className="w-12 h-12 bg-walmart-blue rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-lg">SE</span>
               </div>
               <div className="text-left">
-                <div className="text-xl font-bold text-walmart-blue">SenseEase</div>
-                <div className="text-xs text-gray-500">by Walmart</div>
+                <div className="text-2xl font-bold text-walmart-blue">SenseEase</div>
+                <div className="text-sm text-walmart-yellow font-medium">by Walmart</div>
+                <div className="text-xs text-gray-500">Accessible Shopping Experience</div>
               </div>
             </Link>
             

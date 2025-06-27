@@ -9,36 +9,42 @@ const generateShoppingList = async (prompt) => {
   // This is a mock implementation - replace with actual OpenAI API call
   const mockResponses = {
     'goa trip': {
-      categories: ['Travel Essentials', 'Clothing', 'Health & Safety', 'Electronics'],
+      categories: ['Health & Beauty', 'Sports & Outdoors', 'Clothing', 'Electronics'],
       items: [
-        { name: 'Neutrogena Ultra Sheer Dry-Touch Sunscreen SPF 100+', category: 'Health & Safety', price: 12.99, quantity: 1, sku: 'NEUTRO-SUN-100-3OZ' },
-        { name: 'Dock & Bay Quick Dry Beach Towel', category: 'Travel Essentials', price: 19.99, quantity: 2, sku: 'DOCK-TOWEL-LG-BLUE' },
+        { name: 'Neutrogena Ultra Sheer Dry-Touch Sunscreen SPF 100+', category: 'Health & Beauty', price: 12.99, quantity: 1, sku: 'NEUTRO-SUN-100-3OZ' },
+        { name: 'Coppertone Sport Sunscreen Lotion SPF 50', category: 'Health & Beauty', price: 8.97, quantity: 1, sku: 'COPPER-SPORT-SPF50' },
+        { name: 'Dock & Bay Quick Dry Beach Towel', category: 'Sports & Outdoors', price: 19.99, quantity: 2, sku: 'DOCK-TOWEL-LG-BLUE' },
         { name: 'Havaianas Brazil Flip Flops', category: 'Clothing', price: 15.99, quantity: 1, sku: 'HAVA-BRAZIL-M9-NAVY' },
-        { name: 'JOTO Waterproof Phone Case', category: 'Travel Essentials', price: 9.99, quantity: 1, sku: 'JOTO-WP-CASE-CLEAR' },
+        { name: 'JOTO Waterproof Phone Case', category: 'Electronics', price: 9.99, quantity: 1, sku: 'JOTO-WP-CASE-CLEAR' },
         { name: 'Anker PowerCore 10000 Portable Charger', category: 'Electronics', price: 24.99, quantity: 1, sku: 'ANKER-PC10K-BLACK' },
-        { name: 'Johnson & Johnson First Aid Kit', category: 'Health & Safety', price: 16.99, quantity: 1, sku: 'JJ-FIRSTAID-140PC' }
+        { name: 'Johnson & Johnson First Aid Kit', category: 'Health & Beauty', price: 16.99, quantity: 1, sku: 'JJ-FIRSTAID-140PC' },
+        { name: 'Igloo Playmate Cooler 16 Qt', category: 'Sports & Outdoors', price: 24.88, quantity: 1, sku: 'IGLOO-PLAYMATE-16QT' },
+        { name: 'Banana Boat Aloe After Sun Lotion', category: 'Health & Beauty', price: 4.97, quantity: 1, sku: 'BB-ALOE-AFTERSUN' }
       ]
     },
     'birthday party': {
-      categories: ['Decorations', 'Food & Drinks', 'Tableware'],
+      categories: ['Home & Garden', 'Food & Grocery'],
       items: [
-        { name: 'Amscan Happy Birthday Balloons Pack', category: 'Decorations', price: 8.99, quantity: 1, sku: 'AMSCAN-BDAY-BALLOONS-20' },
-        { name: 'Hefty Disposable Paper Plates 50 Count', category: 'Tableware', price: 6.99, quantity: 1, sku: 'HEFTY-PLATES-50CT-9IN' },
-        { name: 'Solo Red Plastic Cups 50 Count', category: 'Tableware', price: 5.99, quantity: 1, sku: 'SOLO-RED-CUPS-50CT-16OZ' },
-        { name: 'Creative Converting Birthday Candles', category: 'Decorations', price: 3.99, quantity: 1, sku: 'CC-BDAY-CANDLES-24CT' },
-        { name: 'Beistle Party Hats Assorted Colors', category: 'Decorations', price: 7.99, quantity: 1, sku: 'BEISTLE-HATS-8CT-ASST' },
-        { name: 'Coca-Cola Soda Variety Pack 12 Cans', category: 'Food & Drinks', price: 12.99, quantity: 2, sku: 'COKE-VARIETY-12CT-12OZ' }
+        { name: 'Lay\'s Classic Potato Chips', category: 'Food & Grocery', price: 3.98, quantity: 1, sku: 'LAYS-CLASSIC-CHIPS' },
+        { name: 'Tostitos Chunky Salsa', category: 'Food & Grocery', price: 2.98, quantity: 1, sku: 'TOSTITOS-SALSA-CHUNKY' },
+        { name: 'Coca-Cola Soda Variety Pack 12 Cans', category: 'Food & Grocery', price: 12.99, quantity: 1, sku: 'COKE-VARIETY-12CT-12OZ' },
+        { name: 'Hefty Disposable Paper Plates 50 Count', category: 'Home & Garden', price: 6.99, quantity: 1, sku: 'HEFTY-PLATES-50CT-9IN' },
+        { name: 'Great Value Chocolate Ice Cream', category: 'Food & Grocery', price: 3.98, quantity: 1, sku: 'GV-ICE-CREAM-CHOC' },
+        { name: 'DiGiorno Rising Crust Pizza', category: 'Food & Grocery', price: 5.98, quantity: 2, sku: 'DIGIORNO-PIZZA-PEPPERONI' },
+        { name: 'Great Value Paper Napkins', category: 'Home & Garden', price: 1.98, quantity: 1, sku: 'GV-NAPKINS-200CT' },
+        { name: 'Great Value Birthday Cake Mix', category: 'Food & Grocery', price: 1.98, quantity: 1, sku: 'GV-CAKE-MIX-VANILLA' }
       ]
     },
     'camping': {
-      categories: ['Camping Gear', 'Food & Cooking', 'Safety', 'Clothing'],
+      categories: ['Sports & Outdoors', 'Home & Garden'],
       items: [
-        { name: 'Coleman Sundome 4-Person Tent', category: 'Camping Gear', price: 89.99, quantity: 1, sku: 'COLEMAN-SUNDOME-4P' },
-        { name: 'TETON Sports Celsius Sleeping Bag', category: 'Camping Gear', price: 34.99, quantity: 2, sku: 'TETON-CELSIUS-REG' },
-        { name: 'Coleman Portable Camping Stove', category: 'Food & Cooking', price: 45.99, quantity: 1, sku: 'COLEMAN-STOVE-2BURN' },
-        { name: 'Energizer LED Flashlight', category: 'Safety', price: 12.99, quantity: 2, sku: 'ENERGIZER-LED-FLASH' },
-        { name: 'OFF! Deep Woods Insect Repellent', category: 'Safety', price: 8.99, quantity: 1, sku: 'OFF-DEEPWOODS-6OZ' },
-        { name: 'Coleman Portable Camping Chairs', category: 'Camping Gear', price: 29.99, quantity: 2, sku: 'COLEMAN-CHAIR-QUAD' }
+        { name: 'Coleman Sundome 4-Person Tent', category: 'Sports & Outdoors', price: 89.99, quantity: 1, sku: 'COLEMAN-SUNDOME-4P' },
+        { name: 'TETON Sports Celsius Sleeping Bag', category: 'Sports & Outdoors', price: 34.99, quantity: 2, sku: 'TETON-CELSIUS-REG' },
+        { name: 'Coleman Portable Camping Stove', category: 'Home & Garden', price: 45.99, quantity: 1, sku: 'COLEMAN-STOVE-2BURN' },
+        { name: 'Energizer LED Flashlight', category: 'Sports & Outdoors', price: 12.99, quantity: 2, sku: 'ENERGIZER-LED-FLASH' },
+        { name: 'OFF! Deep Woods Insect Repellent', category: 'Sports & Outdoors', price: 8.99, quantity: 1, sku: 'OFF-DEEPWOODS-6OZ' },
+        { name: 'Coleman Portable Camping Chairs', category: 'Sports & Outdoors', price: 29.99, quantity: 2, sku: 'COLEMAN-CHAIR-QUAD' },
+        { name: 'Coleman Lantern Battery Powered', category: 'Sports & Outdoors', price: 19.97, quantity: 1, sku: 'COLEMAN-LANTERN-LED' }
       ]
     }
   };
@@ -51,15 +57,28 @@ const generateShoppingList = async (prompt) => {
     return mockResponses['birthday party'];
   } else if (lowerPrompt.includes('camping') || lowerPrompt.includes('outdoor') || lowerPrompt.includes('hiking')) {
     return mockResponses['camping'];
+  } else if (lowerPrompt.includes('grocery') || lowerPrompt.includes('weekly shopping') || lowerPrompt.includes('essentials')) {
+    // Weekly grocery essentials
+    return {
+      categories: ['Food & Grocery', 'Health & Beauty', 'Home & Garden'],
+      items: [
+        { name: 'Great Value 2% Reduced Fat Milk', category: 'Food & Grocery', price: 3.68, quantity: 1, sku: 'GV-MILK-2PERCENT-GAL' },
+        { name: 'Wonder Bread Classic White', category: 'Food & Grocery', price: 1.28, quantity: 1, sku: 'WONDER-BREAD-WHITE' },
+        { name: 'Bananas Fresh Produce', category: 'Food & Grocery', price: 0.58, quantity: 3, sku: 'FRESH-BANANAS-LB' },
+        { name: 'Great Value Large Eggs', category: 'Food & Grocery', price: 2.12, quantity: 1, sku: 'GV-EGGS-LARGE-DOZEN' },
+        { name: 'Charmin Ultra Soft Toilet Paper', category: 'Health & Beauty', price: 12.97, quantity: 1, sku: 'CHARMIN-ULTRA-SOFT-12' },
+        { name: 'Tide Liquid Laundry Detergent', category: 'Home & Garden', price: 11.97, quantity: 1, sku: 'TIDE-LIQUID-ORIGINAL-92' }
+      ]
+    };
   } else {
     // Default general shopping list
     return {
-      categories: ['General Items'],
+      categories: ['Food & Grocery'],
       items: [
-        { name: 'Multi-purpose Cleaner', category: 'Household', price: 4.99, quantity: 1 },
-        { name: 'Paper Towels', category: 'Household', price: 8.99, quantity: 1 },
-        { name: 'Snack Mix', category: 'Food', price: 6.99, quantity: 1 },
-        { name: 'Bottled Water (24 pack)', category: 'Beverages', price: 3.99, quantity: 1 }
+        { name: 'Great Value 2% Reduced Fat Milk', category: 'Food & Grocery', price: 3.68, quantity: 1, sku: 'GV-MILK-2PERCENT-GAL' },
+        { name: 'Bananas Fresh Produce', category: 'Food & Grocery', price: 0.58, quantity: 2, sku: 'FRESH-BANANAS-LB' },
+        { name: 'Wonder Bread Classic White', category: 'Food & Grocery', price: 1.28, quantity: 1, sku: 'WONDER-BREAD-WHITE' },
+        { name: 'Great Value Large Eggs', category: 'Food & Grocery', price: 2.12, quantity: 1, sku: 'GV-EGGS-LARGE-DOZEN' }
       ]
     };
   }

@@ -68,6 +68,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const addToCart = (item) => {
+    console.log('Adding item to cart:', item);
     const existingItem = cart.find(cartItem => cartItem.name === item.name);
     let newCart;
 
@@ -78,9 +79,10 @@ export const AuthProvider = ({ children }) => {
           : cartItem
       );
     } else {
-      newCart = [...cart, { ...item, quantity: 1, id: Date.now() }];
+      newCart = [...cart, { ...item, quantity: item.quantity || 1, id: Date.now() + Math.random() }];
     }
 
+    console.log('New cart state:', newCart);
     setCart(newCart);
     localStorage.setItem('cart', JSON.stringify(newCart));
   };

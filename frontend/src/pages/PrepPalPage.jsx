@@ -16,12 +16,14 @@ import { toast } from 'react-hot-toast';
 
 import VoiceButton from '../components/voice/VoiceButton';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import { useAuth } from '../contexts/AuthContext';
 
 const PrepPalPage = () => {
+  const { addToCart: addToLocalCart, isAuthenticated } = useAuth();
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
   const [shoppingList, setShoppingList] = useState(null);
-  const [savedLists, setSavedLists] = useState([]);
+  const [addedItems, setAddedItems] = useState(new Set());
 
   const examplePrompts = [
     "Planning a 3-day trip to Goa with friends",
@@ -63,55 +65,117 @@ const PrepPalPage = () => {
     }
   };
 
-  const saveShoppingList = async () => {
-    if (!shoppingList) return;
 
-    const listName = prompt.slice(0, 50) + (prompt.length > 50 ? '...' : '');
-    
+
+  const addToCart = async (item, index) => {
     try {
-      const response = await fetch('/api/preppal/save', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({
-          listName,
-          items: shoppingList.items,
-          prompt: shoppingList.prompt
-        })
+      // Ensure price is a valid number
+      const price = parseFloat(item.actualPrice || item.price) || 0;
+
+      console.log('PrepPal addToCart called with:', {
+        name: item.name,
+        price: price,
+        actualPrice: item.actualPrice,
+        originalPrice: item.price,
+        index: index,
+        isAuthenticated: isAuthenticated
       });
 
-      const data = await response.json();
-      if (data.success) {
-        toast.success('Shopping list saved!');
-        // Add to saved lists
-        setSavedLists(prev => [...prev, {
-          id: Date.now(),
-          name: listName,
-          itemCount: shoppingList.items.length,
-          estimatedCost: shoppingList.summary.estimatedCost,
-          createdAt: new Date()
-        }]);
+      if (isAuthenticated) {
+        // Use server cart for authenticated users
+        const response = await fetch('/api/cart/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({
+            productId: item.productId || null,
+            name: item.name,
+            price: price,
+            quantity: item.quantity,
+            category: item.category
+          })
+        });
+
+        if (response.ok) {
+          setAddedItems(prev => new Set([...prev, index]));
+          toast.success(`Added ${item.name} to cart!`);
+          console.log('Successfully added to cart');
+        } else {
+          console.error('Failed to add to cart:', await response.text());
+          toast.error('Failed to add item to cart');
+        }
+      } else {
+        // Use local cart for non-authenticated users
+        addToLocalCart({
+          name: item.name,
+          price: price,
+          category: item.category,
+          quantity: item.quantity
+        });
+        setAddedItems(prev => new Set([...prev, index]));
+        toast.success(`Added ${item.name} to cart!`);
+        console.log('Successfully added to local cart');
       }
     } catch (error) {
-      console.error('Error saving shopping list:', error);
-      toast.error('Failed to save shopping list');
+      console.error('Error adding to cart:', error);
+      toast.error('Failed to add item to cart');
     }
   };
 
   const addAllToCart = async () => {
     if (!shoppingList) return;
 
+    console.log('AddAllToCart called with shoppingList:', shoppingList);
+    console.log('Categories:', shoppingList.categories);
+    console.log('Items:', shoppingList.items);
+    console.log('Current addedItems:', addedItems);
+
     try {
-      for (const item of shoppingList.items) {
-        // In a real implementation, you'd need to map items to actual product IDs
-        // For now, we'll just show a success message
+      let successCount = 0;
+      let failedCount = 0;
+      const localAddedItems = new Set(addedItems); // Create a local copy to track additions
+
+      // Process all categories and their items
+      for (const category of shoppingList.categories) {
+        const categoryItems = shoppingList.items.filter(item => item.category === category);
+        console.log(`Processing category ${category} with ${categoryItems.length} items:`, categoryItems);
+
+        for (let i = 0; i < categoryItems.length; i++) {
+          const item = categoryItems[i];
+          const itemIndex = `${category}-${i}`; // Create unique index for each item
+
+          console.log(`Processing item ${itemIndex}:`, item.name, 'Already added:', localAddedItems.has(itemIndex));
+
+          if (!localAddedItems.has(itemIndex)) { // Only add items that haven't been added yet
+            try {
+              console.log(`Adding item ${itemIndex}: ${item.name}`);
+              await addToCart(item, itemIndex);
+              localAddedItems.add(itemIndex); // Track locally to prevent duplicates in this batch
+              successCount++;
+              // Small delay to prevent overwhelming the system
+              await new Promise(resolve => setTimeout(resolve, 100));
+            } catch (error) {
+              console.error(`Failed to add ${item.name}:`, error);
+              failedCount++;
+            }
+          }
+        }
       }
-      toast.success(`Added ${shoppingList.items.length} items to your cart!`);
+
+      if (successCount > 0) {
+        toast.success(`Added ${successCount} items to cart!`);
+      }
+      if (failedCount > 0) {
+        toast.warning(`Failed to add ${failedCount} items`);
+      }
+      if (successCount === 0 && failedCount === 0) {
+        toast.info('All items are already in your cart!');
+      }
     } catch (error) {
-      console.error('Error adding to cart:', error);
-      toast.error('Failed to add items to cart');
+      console.error('Error adding all items to cart:', error);
+      toast.error('Failed to add some items to cart');
     }
   };
 
@@ -210,15 +274,8 @@ const PrepPalPage = () => {
                 </h2>
                 <div className="flex space-x-3">
                   <button
-                    onClick={saveShoppingList}
-                    className="btn btn-secondary flex items-center"
-                  >
-                    <Package className="w-4 h-4 mr-2" />
-                    Save List
-                  </button>
-                  <button
                     onClick={addAllToCart}
-                    className="btn btn-primary flex items-center"
+                    className="bg-walmart-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center font-medium shadow-md"
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
                     Add All to Cart
@@ -275,23 +332,52 @@ const PrepPalPage = () => {
                         <span className="w-2 h-2 bg-walmart-blue rounded-full mr-3"></span>
                         {category} ({categoryItems.length} items)
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {categoryItems.map((item, index) => (
-                          <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                            <div className="flex-1">
-                              <p className="font-medium text-gray-900">{item.name}</p>
-                              <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                      <div className="grid grid-cols-1 gap-3">
+                        {categoryItems.map((item, localIndex) => {
+                          const itemIndex = `${category}-${localIndex}`; // Use consistent indexing
+                          const isAdded = addedItems.has(itemIndex);
+                          const displayPrice = parseFloat(item.actualPrice || item.price) || 0;
+
+                          return (
+                            <div key={itemIndex} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border hover:border-walmart-blue transition-colors">
+                              <div className="flex-1">
+                                <p className="font-medium text-gray-900">{item.name}</p>
+                                <p className="text-sm text-gray-600">{item.category}</p>
+                                <div className="flex items-center space-x-4 mt-1">
+                                  <span className="text-sm text-gray-600">Qty: {item.quantity}</span>
+                                  {item.inStock !== undefined && (
+                                    <span className={`text-xs px-2 py-1 rounded-full ${
+                                      item.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                    }`}>
+                                      {item.inStock ? 'In Stock' : 'Out of Stock'}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="flex items-center space-x-4">
+                                <div className="text-right">
+                                  <p className="font-semibold text-gray-900">
+                                    ${displayPrice > 0 ? (displayPrice * item.quantity).toFixed(2) : 'N/A'}
+                                  </p>
+                                  <p className="text-sm text-gray-600">
+                                    ${displayPrice > 0 ? displayPrice.toFixed(2) : 'N/A'} each
+                                  </p>
+                                </div>
+                                <button
+                                  onClick={() => addToCart(item, itemIndex)}
+                                  disabled={isAdded}
+                                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                                    isAdded
+                                      ? 'bg-green-500 text-white cursor-default'
+                                      : 'bg-walmart-blue text-white hover:bg-blue-700'
+                                  }`}
+                                >
+                                  {isAdded ? 'Added to Cart' : 'Add to Cart'}
+                                </button>
+                              </div>
                             </div>
-                            <div className="text-right">
-                              <p className="font-semibold text-gray-900">
-                                ${(item.price * item.quantity).toFixed(2)}
-                              </p>
-                              <p className="text-sm text-gray-600">
-                                ${item.price} each
-                              </p>
-                            </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   );

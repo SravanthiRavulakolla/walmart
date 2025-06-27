@@ -111,7 +111,11 @@ const userSchema = new mongoose.Schema({
   
   // Shopping data
   cart: [{
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: false },
+    name: { type: String, required: false },
+    price: { type: Number, required: false },
+    image: { type: String, required: false },
+    category: { type: String, required: false },
     quantity: { type: Number, default: 1 },
     addedAt: { type: Date, default: Date.now }
   }],
